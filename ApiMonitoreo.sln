@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiMonitoreo", "ApiMonitoreo\ApiMonitoreo.csproj", "{7A996A2F-B1A6-4711-9387-4379950E3B01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7A996A2F-B1A6-4711-9387-4379950E3B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A996A2F-B1A6-4711-9387-4379950E3B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A996A2F-B1A6-4711-9387-4379950E3B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A996A2F-B1A6-4711-9387-4379950E3B01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A8096FB5-0E94-43F1-AD2A-F429E9AC3AD9}
+	EndGlobalSection
+EndGlobal
