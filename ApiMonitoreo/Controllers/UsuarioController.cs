@@ -16,10 +16,19 @@ namespace ApiMonitoreo.Controllers
             _monitoreo = context;
         }
 
-        [HttpGet("Login")]
-        public async Task<IActionResult> Login()
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] Usuario user)
         {
-            return Ok(await _monitoreo.Usuarios.ToListAsync());
+            if (user.Id < 0)
+                return BadRequest("La estructura de la peticion esta mal");
+
+            Usuario? usuario = await _monitoreo.Usuarios.FirstOrDefaultAsync(u => u.Usuario1 == user.Usuario1 && u.Password==user.Password);
+
+            if (usuario == null)
+                return NotFound("Usuario o contraseña incorrectos");
+
+            return Ok("Bienvenido");
+
         }
 
     }
