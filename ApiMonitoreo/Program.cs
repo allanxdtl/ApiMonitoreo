@@ -7,6 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MonitoreoContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("con")));
 
+builder.Services.AddCors(cors =>
+{
+    cors.AddPolicy("UseCors", policy => {
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,7 +28,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
-
+app.UseCors("UseCors");
 app.MapControllers();
 
 app.Run();
