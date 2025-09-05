@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Lote</title>
+    <script src="../js/jquery-3.7.1.min.js"></script>
+   
+   <link href="../styles/Registrar_lote.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="container">
+    <h2>Lotes de materia prima</h2>
+    <form id="formLote">
+      <label for="materiaPrima">Materia prima:</label>
+      <select id="materiaPrima">
+        <option value="">-- Materia prima --</option>
+      </select>
+
+      <label for="fecha">Fecha:</label>
+      <input type="date" id="fecha">
+
+      <label for="cantidad">Cantidad:</label>
+      <input type="number" id="cantidad" step="0.01">
+
+      <button type="submit">Registrar</button>
+    </form>
+  </div>
+</body>
+</html>
+
