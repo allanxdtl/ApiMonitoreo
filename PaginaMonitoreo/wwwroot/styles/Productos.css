@@ -1,0 +1,95 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    background: #ecf0f1;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.crud-container {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 350px;
+    text-align: center;
+}
+
+    .crud-container h2 {
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.botones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.btn {
+    flex: 1 1 calc(50% - 10px);
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    color: white;
+}
+
+.registrar {
+    background: #27ae60;
+}
+
+    .registrar:hover {
+        background: #219150;
+    }
+
+.actualizar {
+    background: #2980b9;
+}
+
+    .actualizar:hover {
+        background: #1f6692;
+    }
+
+.eliminar {
+    background: #c0392b;
+}
+
+    .eliminar:hover {
+        background: #992d22;
+    }
+
+.buscar {
+    background: #f39c12;
+}
+
+    .buscar:hover {
+        background: #d68910;
+    }

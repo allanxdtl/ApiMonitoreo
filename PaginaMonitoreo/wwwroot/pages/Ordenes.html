@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Órdenes</title>
+    <script src="../js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="../styles/Ordenes.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <h2>Órdenes</h2>
+        <form id="formO">
+            <label for="nombre">Nombre cliente:</label>
+            <input type="text" id="nombre" name="nombre">
+            <button type="submit">Buscar</button>
+
+            <label for="producto">Producto:</label>
+            <select id="producto">
+                <option value="">-- Producto --</option>
+            </select>
+
+            <label for="cantidad">Cantidad pedida:</label>
+            <input type="number" id="cantidad" step="0.01">
+
+            <label id="total" >Total $:</label>
+
+            <button type="submit">Generar</button>
+        </form>
+    </div>
+</body>
+</html>
+

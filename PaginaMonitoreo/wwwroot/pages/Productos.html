@@ -2,21 +2,24 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Materia Prima</title>
+    <title>Producto Terminado</title>
     <script src="../js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="../styles/materia_prima.css">
+    <link rel="stylesheet" href="../styles/Productos.css">
 </head>
 <body>
     <div class="crud-container">
-        <h2>Materia Prima</h2>
+        <h2>Producto terminado</h2>
 
         <form id="materiaPrimaForm">
+            <label for="id">ID:</label>
+            <input type="text" id="id" name="id" style="cursor:not-allowed" disabled>
+
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre">
 
-            <label for="unidad">Unidad de medida:</label>
-            <input type="text" id="unidad" name="unidad">
+            <label for="modelo">Modelo:</label>
+            <input type="text" id="modelo" name="modelo">
         </form>
 
         <div class="botones">
