@@ -4,7 +4,36 @@
     <meta charset="UTF-8">
     <title>Plataforma</title>
     <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="../styles/Menu.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            // Verificar si hay usuario logueado
+            const usuario = localStorage.getItem("usuario");
+            if (!usuario) {
+                // Si no hay usuario, redirige al login
+                window.location.href = "Login.html";
+                return;
+            }
+
+            // Evento para cerrar sesión
+            $("#logoutBtn").click(function () {
+                Swal.fire({
+                    title: "¿Cerrar sesión?",
+                    text: "Tu sesión se cerrará",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Sí, salir",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        localStorage.removeItem("usuario");
+                        window.location.href = "Login.html";
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -21,6 +50,8 @@
                 <li><a href="Clientes.html" target="contenidoFrame">Clientes</a></li>
                 <li><a href="Usuarios.html" target="contenidoFrame">Usuarios</a></li>
             </ul>
+            <!-- Botón de cerrar sesión al final -->
+            <button id="logoutBtn" class="logout-btn">Cerrar sesión</button>
         </aside>
 
         <main class="content">
