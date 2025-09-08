@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Plataforma</title>
-    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="../js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="../styles/Menu.css" rel="stylesheet" />
     <script>
@@ -39,7 +39,7 @@
     <div class="container">
         <!-- Menú lateral -->
         <aside class="sidebar">
-            <h2>Plataforma</h2>
+            <h2 id="start" href="./Bienvenida.html" target="contenidoFrame">Plataforma</h2>
             <ul>
                 <li><a href="Materia_prima.html" target="contenidoFrame">Materia prima</a></li>
                 <li><a href="Registrar_lote.html" target="contenidoFrame">Registrar lote</a></li>
@@ -55,7 +55,7 @@
         </aside>
 
         <main class="content">
-            <iframe name="contenidoFrame" id="contenidoFrame" src="paginas/bienvenida.html"></iframe>
+            <iframe name="contenidoFrame" id="contenidoFrame" src="../pages/Bienvenida.html"></iframe>
         </main>
     </div>
 </body>

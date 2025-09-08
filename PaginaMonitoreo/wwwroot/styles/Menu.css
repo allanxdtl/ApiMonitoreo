@@ -72,3 +72,14 @@
     .logout-btn:hover {
         background-color: #c0392b;
     }
+
+#start {
+    margin-bottom: 20px;
+    font-size: 22px;
+    text-align: center;
+    font-weight: bold;
+    color: #ecf0f1;
+    border-bottom: 2px solid #34495e;
+    padding-bottom: 10px;
+}
+
