@@ -25,6 +25,15 @@ namespace ApiMonitoreo.Controllers
 			return Ok(list);
 		}
 
+		[HttpGet("Buscar/{text}")]
+		public async Task<IActionResult> Buscar(string text)
+		{
+			var list = await _monitoreo.Clientes
+				.Where(c => c.RazonSocial.Contains(text) || c.Cp.Contains(text))
+				.ToListAsync();
+			return Ok(list);
+		}
+
 		//Obtiene un cliente por su id
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetById(int id)

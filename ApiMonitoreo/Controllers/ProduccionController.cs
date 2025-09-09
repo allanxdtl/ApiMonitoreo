@@ -1,17 +1,110 @@
 ﻿using ApiMonitoreo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
+using System.Drawing;
+using System.Drawing.Imaging;
+using ZXing;
+using ZXing.QrCode;
 
 namespace ApiMonitoreo.Controllers
 {
+
+	[ApiController]
+	[Route("api/[controller]")]
 	public class ProduccionController : ControllerBase
 	{
 		private readonly MonitoreoContext _context;
 		public ProduccionController(MonitoreoContext monitoreo)
 		{
 			_context = monitoreo;
+			QuestPDF.Settings.License = LicenseType.Community;
 		}
 
+		[HttpGet("GenerarCodigosBarraPDF/{produccionId}")]
+		public async Task<IActionResult> GenerarCodigosBarraPDF(int produccionId)
+		{
+			try
+			{
+				// 1. Validar que la producción existe
+				var produccion = await _context.Produccions.FindAsync(produccionId);
+				if (produccion == null)
+				{
+					return NotFound("Producción no encontrada.");
+				}
+
+				// 2. Obtener los números de serie asociados a la producción
+				var series = await _context.SerieProductos
+					.Where(s => s.ProduccionId == produccionId)
+					.Select(s => s.NumeroSerie)
+					.ToListAsync();
+
+				if (!series.Any())
+				{
+					return NotFound("No se encontraron números de serie para esta producción.");
+				}
+
+				// 3. Generar el PDF en memoria
+				var pdfStream = new MemoryStream();
+				Document.Create(container =>
+				{
+					container.Page(page =>
+					{
+						page.Size(PageSizes.A4);
+						page.Margin(20);
+						page.Content()
+							.Column(column =>
+							{
+								column.Spacing(5);
+								column.Item().Text("Códigos de Barra de Producción").FontSize(20).Bold().AlignCenter();
+								column.Item().Text($"ID de Producción: {produccionId}").FontSize(12).AlignCenter();
+								column.Item().PaddingTop(10);
+
+								foreach (var serie in series)
+								{
+									// Generar el código de barras (usando una imagen de MemoryStream)
+									var writer = new BarcodeWriterPixelData
+									{
+										Format = BarcodeFormat.CODE_128,
+										Options = new QrCodeEncodingOptions
+										{
+											Height = 80,
+											Width = 250
+										}
+									};
+									var pixelData = writer.Write(serie);
+
+									using var bitmap = new Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+									using var ms = new MemoryStream();
+									var bitmapData = bitmap.LockBits(new Rectangle(0, 0, pixelData.Width, pixelData.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+									System.Runtime.InteropServices.Marshal.Copy(pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
+									bitmap.UnlockBits(bitmapData);
+									bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+
+									column.Item().Column(innerColumn =>
+									{
+										// ❌ CAMBIO AQUÍ: Usar .FitWidth() en lugar de .FitHeight()
+										innerColumn.Item().AlignCenter().Image(ms.ToArray()).FitWidth();
+										innerColumn.Item().AlignCenter().Text(serie).FontSize(10);
+										innerColumn.Item().PaddingVertical(10);
+									});
+								}
+							});
+					});
+				}).GeneratePdf(pdfStream);
+
+				pdfStream.Position = 0; // Resetear la posición del stream
+
+				// 4. Devolver el PDF
+				return File(pdfStream.ToArray(), "application/pdf", $"CodigosBarra_{produccionId}.pdf");
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, "Error al generar el PDF: " + ex.Message);
+			}
+		}
 
 
 		[HttpPost("CrearProduccion")]

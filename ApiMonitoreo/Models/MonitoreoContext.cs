@@ -23,6 +23,8 @@ public partial class MonitoreoContext : DbContext
 
     public virtual DbSet<MateriaPrima> MateriaPrimas { get; set; }
 
+    public virtual DbSet<Orden> Ordens { get; set; }
+
     public virtual DbSet<Produccion> Produccions { get; set; }
 
     public virtual DbSet<ProductoTerminado> ProductoTerminados { get; set; }
@@ -107,6 +109,28 @@ public partial class MonitoreoContext : DbContext
             entity.Property(e => e.UnidadMedida)
                 .HasMaxLength(20)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Orden>(entity =>
+        {
+            entity.HasKey(e => e.Idorden).HasName("PK__Orden__5CBBCAD745FDA26E");
+
+            entity.ToTable("Orden");
+
+            entity.Property(e => e.Idorden).HasColumnName("IDOrden");
+            entity.Property(e => e.FechaOrden).HasColumnType("datetime");
+            entity.Property(e => e.Idcliente).HasColumnName("IDCliente");
+            entity.Property(e => e.Idproducto).HasColumnName("IDProducto");
+
+            entity.HasOne(d => d.IdclienteNavigation).WithMany(p => p.Ordens)
+                .HasForeignKey(d => d.Idcliente)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Orden_Cliente");
+
+            entity.HasOne(d => d.IdproductoNavigation).WithMany(p => p.Ordens)
+                .HasForeignKey(d => d.Idproducto)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Orden_ProductoTerminado");
         });
 
         modelBuilder.Entity<Produccion>(entity =>

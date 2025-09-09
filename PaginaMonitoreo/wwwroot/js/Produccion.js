@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    const apiBase = "http://localhost:5241/api"; // Ajusta tu URL base aquí
+    const apiBase = "http://localhost:5241/api";
 
     // 1. Cargar productos al cargar la página
     function cargarProductos() {
@@ -33,37 +33,39 @@
         $.ajax({
             url: `${apiBase}/Produccion/CrearProduccion?productoId=${productoId}&cantidad=${cantidad}`,
             type: "POST",
-            success: function (mensaje) {
-                Swal.fire("Éxito", mensaje, "success").then(() => {
-                    // Descargar el PDF del BOM después de producir
-                    descargarPDF(productoId);
+            success: function (produccionId) {
+                Swal.fire("Éxito", "Producción creada correctamente", "success").then(() => {
+                    descargarPDFCodigosBarra(produccionId);
                 });
             },
             error: function (xhr) {
                 let errorMsg = xhr.responseText || "Error al crear producción";
-                Swal.fire("Error", errorMsg, "error");
+
+                // ❌ CAMBIO AQUÍ: La redirección ahora está dentro de la promesa de SweetAlert
+                Swal.fire("Error", errorMsg, "error").then(() => {
+                    window.location.href = '../pages/Registrar_Lote.html';
+                });
             }
         });
     });
 
-    // 3. Función para descargar el PDF del BOM
-    function descargarPDF(productoId) {
+    // 3. Función para descargar el PDF de códigos de barra
+    function descargarPDFCodigosBarra(produccionId) {
         $.ajax({
-            url: `${apiBase}/BOM/GetByProducto/${productoId}`,
+            url: `${apiBase}/Produccion/GenerarCodigosBarraPDF/${produccionId}`,
             method: "GET",
             xhrFields: {
-                responseType: "blob" // Para manejar el archivo binario
+                responseType: "blob"
             },
             success: function (data) {
-                // Crear URL para descargar PDF
                 let blob = new Blob([data], { type: "application/pdf" });
                 let link = document.createElement("a");
                 link.href = window.URL.createObjectURL(blob);
-                link.download = `BOM_${productoId}.pdf`;
+                link.download = `CodigosBarra_${produccionId}.pdf`;
                 link.click();
             },
             error: function () {
-                Swal.fire("Error", "No se pudo generar el PDF", "error");
+                Swal.fire("Error", "No se pudo generar el PDF de códigos de barra", "error");
             }
         });
     }

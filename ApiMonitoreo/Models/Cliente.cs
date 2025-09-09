@@ -10,4 +10,6 @@ public partial class Cliente
     public string? RazonSocial { get; set; }
 
     public string? Cp { get; set; }
+
+    public virtual ICollection<Orden> Ordens { get; set; } = new List<Orden>();
 }

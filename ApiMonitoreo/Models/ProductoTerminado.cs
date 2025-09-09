@@ -11,6 +11,8 @@ public partial class ProductoTerminado
 
     public int ExistenciaActual { get; set; }
 
+    public virtual ICollection<Orden> Ordens { get; set; } = new List<Orden>();
+
     public virtual ICollection<Produccion> Produccions { get; set; } = new List<Produccion>();
 
     public virtual ICollection<RecetaProducto> RecetaProductos { get; set; } = new List<RecetaProducto>();
