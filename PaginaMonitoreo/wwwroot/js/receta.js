@@ -22,3 +22,28 @@
         });
     });
 });
+
+document.getElementById("bom").addEventListener("click", function () {
+    const productoId = $("#producto").val(); // ejemplo, puede venir dinámico
+    const url = `http://localhost:5241/api/BOM/GetByProducto/${productoId}`;
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al generar PDF");
+            }
+            return response.blob(); // Recibimos archivo binario
+        })
+        .then(blob => {
+            // Crear URL temporal para descarga
+            const urlBlob = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = urlBlob;
+            a.download = `BOM_${productoId}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(urlBlob); // Liberar memoria
+        })
+        .catch(error => console.error("Error:", error));
+});
