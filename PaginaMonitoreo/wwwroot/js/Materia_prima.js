@@ -1,6 +1,48 @@
 ﻿/// <reference path="jquery-3.7.1.min.js" />
 $(document).ready(function () {
 
+    $("#clear").click(function () {
+        $("#id").val("");
+        $("#nombre").val("");
+        $("#unidad").val("");
+    });
+
+    function chargeTable(endpoint) {
+        $.get(endpoint, function (data) {
+            let tbody = $("#tablaMateriaPrima tbody");
+            tbody.empty();
+
+            // Tomamos solo los primeros 30 registros
+            let registros = data.slice(0, 30);
+
+            registros.forEach(item => {
+                let fila = $(`
+                <tr data-id="${item.materiaPrimaId}" data-nombre="${item.nombre}" data-unidad="${item.unidadMedida}">
+                    <td>${item.materiaPrimaId}</td>
+                    <td>${item.nombre}</td>
+                    <td>${item.unidadMedida}</td>
+                    <td>${item.existencia}</td>
+                </tr>
+            `);
+
+                // Evento click para rellenar los campos
+                fila.on("click", function () {
+                    $("#id").val($(this).data("id"));
+                    $("#nombre").val($(this).data("nombre"));
+                    $("#unidad").val($(this).data("unidad"));
+                });
+
+                tbody.append(fila);
+            });
+        }).fail(function () {
+            console.error("Error al cargar los registros.");
+        });
+    }
+
+    chargeTable("http://localhost:5241/api/MateriaPrima/List");
+
+
+
     // Registrar
     $('#registrar').on('click', function () {
         let datos = {
@@ -43,41 +85,20 @@ $(document).ready(function () {
 
     // Buscar
     $('#buscar').on('click', function () {
-        let id = $('#id').val();
+        $("#id").val("");
 
-        if (!id) {
+        let text = $('#nombre').val();
+
+        if (!text) {
             Swal.fire({
                 icon: 'error',
-                title: 'Sin ID',
-                text: 'Debes ingresar un ID para buscar.'
+                title: 'Sin texto',
+                text: 'Debes ingresar texto en algun campo para buscar.'
             });
             return;
         }
 
-        $.get(`http://localhost:5241/api/MateriaPrima/${id}`, function (data) {
-            if (data) {
-                $('#nombre').val(data.nombre);
-                $('#unidad').val(data.unidadMedida);
-
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Registro encontrado',
-                    text: 'Los datos se cargaron en el formulario.'
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'No encontrado',
-                    text: 'No existe un registro con ese ID.'
-                });
-            }
-        }).fail(function () {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'No se pudo realizar la búsqueda.'
-            });
-        });
+        chargeTable(`http://localhost:5241/api/MateriaPrima?text=${text}`);
     });
 
     // Actualizar

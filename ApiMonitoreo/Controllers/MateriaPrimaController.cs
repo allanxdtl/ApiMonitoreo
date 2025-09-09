@@ -19,11 +19,12 @@ namespace ApiMonitoreo.Controllers
 		[HttpGet("List")]
 		public async Task<IActionResult> Get()
 		{
-			var list = await _monitoreo.MateriaPrimas.Select(m => new
+			var list = await _monitoreo.MateriaPrimas.Include(b => b.LoteMateriaPrimas).Select(m => new
 			{
 				m.MateriaPrimaId,
 				m.Nombre,
-				m.UnidadMedida
+				m.UnidadMedida,
+				Existencia=m.LoteMateriaPrimas.Sum(l => l.CantidadDisponible)
 			}).ToListAsync();
 
 			return Ok(list);
@@ -39,6 +40,24 @@ namespace ApiMonitoreo.Controllers
 
 
 			return Ok( new { materiaPrima.MateriaPrimaId, materiaPrima.Nombre, materiaPrima.UnidadMedida });
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Get(string text)
+		{
+			var results = await _monitoreo.MateriaPrimas
+				.Include(b => b.LoteMateriaPrimas)
+				.Where(m => m.Nombre.ToLower().Contains(text.ToLower()) || m.UnidadMedida.ToLower().Contains( text.ToLower()))
+				.Select(m => new 
+				{ 
+					m.MateriaPrimaId,
+					m.Nombre,
+					m.UnidadMedida,
+					Existencia= m.LoteMateriaPrimas.Sum(l => l.CantidadDisponible)
+				})
+				.ToListAsync();
+
+			return Ok(results);
 		}
 
 		//Inserta una nueva materia prima

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Materia Prima</title>
     <script src="../js/jquery-3.7.1.min.js"></script>
-    <script src="../js/Materia_prima.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../styles/materia_prima.css">
 </head>
@@ -14,7 +13,7 @@
 
         <form id="materiaPrimaForm">
             <label for="id">ID:</label>
-            <input type="text" id="id" name="id" placeholder="(Solo para buscar o editar)">
+            <input type="text" id="id" name="id" placeholder="(Solo para buscar o editar)" disabled style="cursor: not-allowed">
 
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre">
@@ -28,7 +27,26 @@
             <button type="button" id="actualizar" class="btn actualizar">Actualizar</button>
             <button type="button" id="eliminar" class="btn eliminar">Eliminar</button>
             <button type="button" id="buscar" class="btn buscar">Buscar</button>
+            <button type="button" id="clear" class=" btn" style="background-color: grey; color:black">Limpiar</button>
+        </div>
+
+        <!-- Contenedor para la tabla -->
+        <div class="tabla-container">
+            <table id="tablaMateriaPrima">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Unidad de Medida</th>
+                        <th>Existencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los registros se insertarán aquí -->
+                </tbody>
+            </table>
         </div>
     </div>
+    <script src="../js/Materia_prima.js"></script>
 </body>
 </html>
