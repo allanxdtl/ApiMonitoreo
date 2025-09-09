@@ -21,6 +21,31 @@
             selectMateria.append(`<option value="${item.materiaPrimaId}">${item.nombre} - ${item.unidadMedida}</option>`);
         });
     });
+
+    $("#Add").click(function () {
+        $.post("http://localhost:5241/api/BOM/Insert",
+            {
+                productoId: $("#producto").val(),
+                materiaPrimaId: $("#materiaPrima").val(),
+                cantidadNecesaria: $("#cantidad").val()
+            }
+            , function (success) {
+                Swal.fire({
+                    title: "Materia prima añadida con exito al producto!",
+                    icon: "success",
+                    draggable: true
+                });
+            }).fail(function (error) { 
+                Swal.fire({
+                    title: "Error al añadir producto al BOM",
+                    icon: "error",
+                    draggable: true
+                });
+            });
+    });
+
+
+
 });
 
 document.getElementById("bom").addEventListener("click", function () {

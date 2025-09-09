@@ -5,6 +5,7 @@ $(document).ready(function () {
         $("#id").val("");
         $("#nombre").val("");
         $("#unidad").val("");
+        chargeTable("http://localhost:5241/api/MateriaPrima/List");
     });
 
     function chargeTable(endpoint) {
@@ -71,6 +72,7 @@ $(document).ready(function () {
                     text: 'Materia prima registrada correctamente'
                 });
                 limpiar();
+                chargeTable("http://localhost:5241/api/MateriaPrima/List");
             },
             error: function (xhr) {
                 console.error(xhr);
@@ -131,6 +133,7 @@ $(document).ready(function () {
                     text: 'La materia prima se actualizó correctamente.'
                 });
                 limpiar();
+                chargeTable("http://localhost:5241/api/MateriaPrima/List");
             },
             error: function () {
                 Swal.fire({
