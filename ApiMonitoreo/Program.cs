@@ -32,7 +32,7 @@ builder.Services.AddSwaggerGen(options =>
         TermsOfService = new Uri("https://example.com/terms"),
         Contact = new OpenApiContact
         {
-            Name = "Bryan Allan Valdez Muñoz",
+            Name = "Bryan Allan Valdez MuÃ±oz",
             Email = "alan272_@hotmail.com"
         },
         License = new OpenApiLicense

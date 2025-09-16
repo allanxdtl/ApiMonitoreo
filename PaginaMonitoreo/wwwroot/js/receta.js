@@ -23,25 +23,30 @@
     });
 
     $("#Add").click(function () {
-        $.post("http://localhost:5241/api/BOM/Insert",
-            {
+        $.ajax({
+            url: "http://localhost:5241/api/BOM/Insert",
+            type: "POST",
+            data: JSON.stringify({
                 productoId: $("#producto").val(),
                 materiaPrimaId: $("#materiaPrima").val(),
                 cantidadNecesaria: $("#cantidad").val()
-            }
-            , function (success) {
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function () {
                 Swal.fire({
-                    title: "Materia prima añadida con exito al producto!",
+                    title: "Materia prima añadida con éxito al producto!",
                     icon: "success",
                     draggable: true
                 });
-            }).fail(function (error) { 
+            },
+            error: function () {
                 Swal.fire({
                     title: "Error al añadir producto al BOM",
                     icon: "error",
                     draggable: true
                 });
-            });
+            }
+        });
     });
 
 
