@@ -6,26 +6,36 @@
     <script src="../js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/Registrar_Lote.js"></script>
-   <link href="../styles/Registrar_lote.css" rel="stylesheet" />
+    <link href="../styles/Registrar_lote.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.14.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+
 </head>
 <body>
-  <div class="container">
-    <h2>Lotes de materia prima</h2>
-    <form id="formLote">
-      <label for="materiaPrima">Materia prima:</label>
-      <select id="materiaPrima">
-        <option value="">-- Materia prima --</option>
-      </select>
+    <div class="container">
+        <h2>Lotes de materia prima</h2>
+        <form id="formLote">
+            <label for="materiaPrima">Materia prima:</label>
+            <select id="materiaPrima">
+                <option value="">-- Materia prima --</option>
+            </select>
 
-      <label for="fecha">Fecha:</label>
-      <input type="date" id="fecha">
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha">
 
-      <label for="cantidad">Cantidad:</label>
-      <input type="number" id="cantidad" step="0.01">
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" step="0.01">
 
-      <button type="button" id="btnRegistrarLote">Registrar</button>
-    </form>
-  </div>
+            <div id="camaraContainer" style="display:none; margin-top:10px;">
+                <h3>Reconocimiento de materia prima</h3>
+                <video id="camara" width="300" height="200" autoplay playsinline muted></video>
+                <p id="estadoReconocimiento">Esperando reconocimiento...</p>
+            </div>
+
+            <button type="button" id="btnRegistrarLote" disabled>Registrar</button>
+        </form>
+    </div>
+
 </body>
 </html>
 
