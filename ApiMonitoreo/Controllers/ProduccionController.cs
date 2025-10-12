@@ -196,7 +196,7 @@ namespace ApiMonitoreo.Controllers
 					_context.SerieProductos.Add(new SerieProducto
 					{
 						ProduccionId = produccion.ProduccionId,
-						NumeroSerie = $"PROD-{productoId}-{DateTime.Now:yyyyMMdd}-{i:D3}"
+						NumeroSerie = $"PROD-{produccion.ProduccionId}-{DateTime.Now:yyyyMMdd}-{i:D3}"
 					});
 				}
 
