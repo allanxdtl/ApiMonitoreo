@@ -9,7 +9,7 @@
   let claseObjetivo = null;
 
   async function cargarModelo() {
-    const URL = "https://teachablemachine.withgoogle.com/models/l9o0q_tEz/";
+      const URL = "https://teachablemachine.withgoogle.com/models/l9o0q_tEz/";
     modelo = await tmImage.load(`${URL}model.json`, `${URL}metadata.json`);
     console.log("Modelo cargado correctamente");
   }
