@@ -41,45 +41,6 @@ $(document).ready(function () {
         });
     });
 
-    // Buscar
-    $('#buscar').on('click', function () {
-        let id = $('#id').val();
-
-        if (!id) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Sin ID',
-                text: 'Debes ingresar un ID para buscar.'
-            });
-            return;
-        }
-
-        $.get(`http://localhost:5241/api/Cliente/${id}`, function (data) {
-            if (data) {
-                $('#razon').val(data.razonSocial);
-                $('#cp').val(data.cp);
-
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Registro encontrado',
-                    text: 'Los datos se cargaron en el formulario.'
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'No encontrado',
-                    text: 'No existe un registro con ese ID.'
-                });
-            }
-        }).fail(function () {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'No se pudo realizar la búsqueda.'
-            });
-        });
-    });
-
     // Actualizar
     $('#actualizar').on('click', function () {
         let id = $('#id').val();
@@ -163,6 +124,112 @@ $(document).ready(function () {
                     }
                 });
             }
+        });
+    });
+
+    // Buscar
+    $('#buscar').on('click', function () {
+        let id = $('#id').val();
+
+        if (!id) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Sin ID',
+                text: 'Debes ingresar un ID para buscar.'
+            });
+            return;
+        }
+
+        $.get(`http://localhost:5241/api/Cliente/${id}`, function (data) {
+            if (data) {
+                $('#razon').val(data.razonSocial);
+                $('#cp').val(data.cp);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registro encontrado',
+                    text: 'Los datos se cargaron en el formulario.'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No encontrado',
+                    text: 'No existe un registro con ese ID.'
+                });
+            }
+        }).fail(function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo realizar la búsqueda.'
+            });
+        });
+    });
+    // ========== BOTÓN BUSCAR ==========
+    $('#buscar').on('click', function () {
+        $('#modalBuscarCliente').fadeIn(200);
+        $('#inputBuscarCliente').val('').focus();
+        $('#resultadosBusqueda').empty();
+    });
+
+    // Cerrar modal
+    $('.close-button').on('click', function () {
+        $('#modalBuscarCliente').fadeOut(200);
+    });
+
+    // Cerrar modal si se hace clic fuera del contenido
+    $(window).on('click', function (e) {
+        if ($(e.target).is('#modalBuscarCliente')) {
+            $('#modalBuscarCliente').fadeOut(200);
+        }
+    });
+
+    // Buscar en tiempo real
+    $('#inputBuscarCliente').on('keyup', function () {
+        let texto = $(this).val().trim();
+
+        if (texto.length < 2) {
+            $('#resultadosBusqueda').empty();
+            return;
+        }
+
+        $.get(`http://localhost:5241/api/Cliente/Buscar/${texto}`, function (data) {
+            let html = '';
+
+            if (data.length === 0) {
+                html = '<p style="text-align:center;color:#888;">Sin resultados</p>';
+            } else {
+                data.forEach(c => {
+                    html += `
+                        <div class="resultado-item" data-id="${c.id}" data-razon="${c.razonSocial}" data-cp="${c.cp}">
+                            <strong>${c.razonSocial}</strong><br>
+                            <small>CP: ${c.cp}</small>
+                        </div>`;
+                });
+            }
+
+            $('#resultadosBusqueda').html(html);
+        }).fail(() => {
+            $('#resultadosBusqueda').html('<p style="text-align:center;color:red;">Error al buscar.</p>');
+        });
+    });
+
+    // Seleccionar un cliente del modal
+    $(document).on('click', '.resultado-item', function () {
+        const id = $(this).data('id');
+        const razon = $(this).data('razon');
+        const cp = $(this).data('cp');
+
+        $('#id').val(id);
+        $('#razon').val(razon);
+        $('#cp').val(cp);
+
+        $('#modalBuscarCliente').fadeOut(200);
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Cliente seleccionado',
+            text: `Se cargó la información de ${razon}`
         });
     });
 

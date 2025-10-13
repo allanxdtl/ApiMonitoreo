@@ -1,8 +1,12 @@
 ﻿body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f4fc;
+   font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #74b9ff, #a29bfe);
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .container {
