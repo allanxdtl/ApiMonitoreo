@@ -108,7 +108,7 @@ namespace ApiMonitoreo.Controllers
 
 
 		[HttpPost("CrearProduccion")]
-		public async Task<IActionResult> CrearProduccion(int productoId, int cantidad)
+		public async Task<IActionResult> CrearProduccion(int productoId, int cantidad, int orden)
 		{
 			// Validación de datos
 			if (productoId <= 0 || cantidad <= 0)
@@ -145,7 +145,8 @@ namespace ApiMonitoreo.Controllers
 				{
 					ProductoId = productoId,
 					CantidadProducida = cantidad,
-					FechaProduccion = DateOnly.FromDateTime(DateTime.Now)
+					FechaProduccion = DateOnly.FromDateTime(DateTime.Now),
+					OrdenId = orden
 				};
 				_context.Produccions.Add(produccion);
 				await _context.SaveChangesAsync();
@@ -199,6 +200,11 @@ namespace ApiMonitoreo.Controllers
 						NumeroSerie = $"PROD-{produccion.ProduccionId}-{DateTime.Now:yyyyMMdd}-{i:D3}"
 					});
 				}
+
+				await _context.SaveChangesAsync();
+
+				var ordenDB = await _context.Ordens.FirstOrDefaultAsync(o => o.Idorden == orden);
+				ordenDB.Estatus = "Listo para pruebas";
 
 				await _context.SaveChangesAsync();
 

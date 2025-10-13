@@ -13,7 +13,11 @@ public partial class Produccion
 
     public DateOnly FechaProduccion { get; set; }
 
+    public int? OrdenId { get; set; }
+
     public virtual ICollection<ConsumoMateriaPrima> ConsumoMateriaPrimas { get; set; } = new List<ConsumoMateriaPrima>();
+
+    public virtual Orden? Orden { get; set; }
 
     public virtual ProductoTerminado Producto { get; set; } = null!;
 

@@ -27,20 +27,22 @@ namespace ApiMonitoreo.Controllers
 			if (idCliente <= 0 || idProducto <= 0 || cantidad <= 0)
 				return BadRequest("Datos inválidos.");
 
-			var producto = await _context.ProductoTerminados.FirstOrDefaultAsync(p => p.ProductoId == idProducto);
-			if (producto == null) return NotFound("Producto no encontrado.");
-			if (producto.ExistenciaActual < cantidad) return Conflict($"No hay suficiente existencia del producto '{producto.Nombre}'.");
+			var producto = await _context.ProductoTerminados
+				.FirstOrDefaultAsync(p => p.ProductoId == idProducto);
+			if (producto == null)
+				return NotFound("Producto no encontrado.");
 
+			// ✅ Ya no se valida existencia, se crea con estatus "Pendiente para producción"
 			var nuevaOrden = new Orden
 			{
 				Idcliente = idCliente,
 				Idproducto = idProducto,
 				Cantidad = cantidad,
-				FechaOrden = DateTime.Now
+				FechaOrden = DateTime.Now,
+				Estatus = "Pendiente para producción"
 			};
 
 			_context.Ordens.Add(nuevaOrden);
-			producto.ExistenciaActual -= cantidad;
 			await _context.SaveChangesAsync();
 
 			var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Id == idCliente);
@@ -54,6 +56,27 @@ namespace ApiMonitoreo.Controllers
 			{
 				return StatusCode(500, $"Error al generar el PDF: {ex.Message}");
 			}
+		}
+
+		[HttpGet("OrdenesPendientes")]
+		public async Task<IActionResult> Get()
+		{
+			var ordenes = await _context.Ordens
+								.Include(o => o.IdclienteNavigation)
+								.Include(o => o.IdproductoNavigation)
+								.Select(o => new
+								{
+									o.Idorden,
+									o.FechaOrden,
+									o.IdproductoNavigation.ProductoId,
+									o.IdproductoNavigation.Nombre,
+									o.Cantidad,
+									o.Estatus
+								})
+								.Where(o => o.Estatus == "Pendiente para producción")
+								.ToListAsync();
+
+			return Ok(ordenes);
 		}
 
 		private byte[] GenerarPdfOrden(Orden orden, ProductoTerminado producto, Cliente cliente)
