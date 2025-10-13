@@ -1,4 +1,7 @@
 ﻿/// <reference path="jquery-3.7.1.min.js" />
+
+import apiRoute from "./api";
+
 $(document).ready(function () {
 
     // Registrar
@@ -18,7 +21,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: "http://localhost:5241/api/Cliente/Insert",
+            url: `${apiRoute}Cliente/Insert`,
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(datos),
@@ -60,7 +63,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: `http://localhost:5241/api/Cliente/Update`,
+            url: `${apiRoute}Cliente/Update`,
             method: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify(datos),
@@ -105,7 +108,7 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: `http://localhost:5241/api/Cliente/Delete/${id}`,
+                    url: `${apiRoute}Cliente/Delete/${id}`,
                     method: 'DELETE',
                     success: function () {
                         Swal.fire({
@@ -140,7 +143,7 @@ $(document).ready(function () {
             return;
         }
 
-        $.get(`http://localhost:5241/api/Cliente/${id}`, function (data) {
+        $.get(`${apiRoute}Cliente/${id}`, function (data) {
             if (data) {
                 $('#razon').val(data.razonSocial);
                 $('#cp').val(data.cp);
@@ -193,7 +196,7 @@ $(document).ready(function () {
             return;
         }
 
-        $.get(`http://localhost:5241/api/Cliente/Buscar/${texto}`, function (data) {
+        $.get(`${apiRoute}Cliente/Buscar/${texto}`, function (data) {
             let html = '';
 
             if (data.length === 0) {

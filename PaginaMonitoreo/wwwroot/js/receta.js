@@ -75,5 +75,8 @@ document.getElementById("bom").addEventListener("click", function () {
             a.remove();
             window.URL.revokeObjectURL(urlBlob); // Liberar memoria
         })
-        .catch(error => console.error("Error:", error));
+        .catch((error) => {
+            console.log(error);
+            Swal.fire("Error", error, "error");
+        });
 });

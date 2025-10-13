@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿import apiRoute from "./api.js"
+
+$(document).ready(function () {
     $("#loginForm").on("submit", function (e) {
         e.preventDefault();
 
@@ -11,7 +13,7 @@
         }
 
         $.ajax({
-            url: "http://localhost:5241/api/Usuario/Login", // Ajusta al puerto de tu API
+            url: `${apiRoute}Usuario/Login`, // Ajusta al puerto de tu API
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({

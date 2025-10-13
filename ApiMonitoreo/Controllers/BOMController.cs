@@ -102,55 +102,123 @@ namespace ApiMonitoreo.Controllers
             {
                 container.Page(page =>
                 {
-                    page.Margin(30);
+                    page.Margin(40);
 
-                    // Encabezado
+                    // ==== ENCABEZADO ====
                     page.Header().Row(row =>
                     {
+
+                        // Columna derecha: Títulos
                         row.RelativeItem().Column(col =>
                         {
-                            col.Item().Text($"Reporte BOM - Producto Terminado").FontSize(16).Bold();
-                            col.Item().Text($"Producto ID: {productoId} - {nombreProducto}").FontSize(12);
-                            col.Item().Text($"Fecha: {fechaImpresion}").FontSize(10).Italic();
+                            col.Item().Text("Reporte de Materiales (BOM)")
+                                .FontSize(18)
+                                .Bold()
+                                .FontColor("#2c3e50");
+
+                            col.Item().Text($"Producto terminado: {nombreProducto}")
+                                .FontSize(12)
+                                .FontColor("#34495e");
+
+                            col.Item().Text($"ID Producto: {productoId}")
+                                .FontSize(11)
+                                .FontColor("#7f8c8d");
+
+                            col.Item().Text($"Fecha de emisión: {fechaImpresion}")
+                                .FontSize(10)
+                                .Italic()
+                                .FontColor("#95a5a6");
                         });
                     });
 
-                    // Contenido: Tabla con detalles
-                    page.Content().Table(table =>
+                    page.Content().PaddingVertical(15).Column(col =>
                     {
-                        table.ColumnsDefinition(columns =>
-                        {
-                            columns.ConstantColumn(100);  // ID MP
-                            columns.RelativeColumn();     // Nombre MP
-                            columns.ConstantColumn(100);  // Cantidad Necesaria
-                            columns.ConstantColumn(100);  // Existencia MP
-                        });
+                        // ==== Subtítulo ====
+                        col.Item()
+                            .PaddingBottom(5)
+                            .Text("Detalles de materiales requeridos")
+                            .FontSize(14)
+                            .Bold()
+                            .FontColor("#2c3e50");
 
-                        // Encabezado de la tabla
-                        table.Header(header =>
+                        // ==== TABLA ====
+                        col.Item().Table(table =>
                         {
-                            header.Cell().Text("ID Materia Prima").Bold();
-                            header.Cell().Text("Nombre Materia Prima").Bold();
-                            header.Cell().Text("Cantidad Necesaria").Bold();
-                            header.Cell().Text("Existencia Actual MP").Bold();
-                        });
+                            table.ColumnsDefinition(columns =>
+                            {
+                                columns.ConstantColumn(60);   // ID
+                                columns.RelativeColumn(3);    // Nombre MP
+                                columns.RelativeColumn(2);    // Cantidad Necesaria
+                                columns.RelativeColumn(2);    // Existencia Actual
+                            });
 
-                        // Filas con datos
-                        foreach (var d in detalles)
-                        {
-                            table.Cell().Text(d.IdMateriaPrima.ToString());
-                            table.Cell().Text(d.NombreMateriaPrima);
-                            table.Cell().Text(d.CantidadNecesaria.ToString());
-                            table.Cell().Text(d.ExistenciaActualMP.ToString());
-                        }
+                            // === Encabezado ===
+                            table.Header(header =>
+                            {
+                                header.Cell().Element(CellStyleHeader).Text("ID").FontColor("#ffffff").Bold();
+                                header.Cell().Element(CellStyleHeader).Text("Materia Prima").FontColor("#ffffff").Bold();
+                                header.Cell().Element(CellStyleHeader).Text("Cantidad Necesaria").FontColor("#ffffff").Bold();
+                                header.Cell().Element(CellStyleHeader).Text("Existencia Actual MP").FontColor("#ffffff").Bold();
+                            });
+
+                            // === Filas dinámicas ===
+                            bool alternate = false;
+                            foreach (var d in detalles)
+                            {
+                                string bgColor = alternate ? "#f8f9fa" : "#ffffff";
+                                alternate = !alternate;
+
+                                table.Cell().Element(c => CellStyleRow(c, bgColor)).Text(d.IdMateriaPrima.ToString());
+                                table.Cell().Element(c => CellStyleRow(c, bgColor)).Text(d.NombreMateriaPrima);
+                                table.Cell().Element(c => CellStyleRow(c, bgColor)).AlignRight().Text($"{d.CantidadNecesaria:N2}");
+                                table.Cell().Element(c => CellStyleRow(c, bgColor)).AlignRight().Text($"{d.ExistenciaActualMP:N2}");
+                            }
+
+                            // === Totales (opcional, si aplica) ===
+                            table.Cell().ColumnSpan(4).PaddingTop(5)
+                                .BorderTop(1)
+                                .AlignRight()
+                                .Text($"Total de materiales: {detalles.Count}")
+                                .FontSize(11)
+                                .Bold()
+                                .FontColor("#2c3e50");
+                        });
                     });
 
-                    // Pie de página con existencia del producto
-                    page.Footer().AlignLeft().Text($"Existencia actual del producto terminado: {existenciaProducto}");
+                    // ==== PIE DE PÁGINA ====
+                    page.Footer().AlignRight().Text(txt =>
+                    {
+                        txt.Span("Existencia actual del producto terminado: ")
+                           .Bold()
+                           .FontColor("#2c3e50");
+                        txt.Span($"{existenciaProducto:N2} unidades")
+                           .FontColor("#27ae60");
+                    });
                 });
             });
 
             return pdf.GeneratePdf();
+
+            // ==== FUNCIONES DE ESTILO ====
+            static IContainer CellStyleHeader(IContainer container)
+            {
+                return container
+                    .Background("#2c3e50")
+                    .PaddingVertical(6)
+                    .PaddingHorizontal(4)
+                    .BorderBottom(1)
+                    .BorderColor("#34495e");
+            }
+
+            static IContainer CellStyleRow(IContainer container, string background)
+            {
+                return container
+                    .Background(background)
+                    .PaddingVertical(5)
+                    .PaddingHorizontal(4)
+                    .BorderBottom(0.5f)
+                    .BorderColor("#ecf0f1");
+            }
         }
     }
 }
