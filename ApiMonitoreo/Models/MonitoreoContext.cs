@@ -19,6 +19,8 @@ public partial class MonitoreoContext : DbContext
 
     public virtual DbSet<ConsumoMateriaPrima> ConsumoMateriaPrimas { get; set; }
 
+    public virtual DbSet<HistorialPrueba> HistorialPruebas { get; set; }
+
     public virtual DbSet<LoteMateriaPrima> LoteMateriaPrimas { get; set; }
 
     public virtual DbSet<MateriaPrima> MateriaPrimas { get; set; }
@@ -29,6 +31,10 @@ public partial class MonitoreoContext : DbContext
 
     public virtual DbSet<ProductoTerminado> ProductoTerminados { get; set; }
 
+    public virtual DbSet<Prueba> Pruebas { get; set; }
+
+    public virtual DbSet<PruebaProducto> PruebaProductos { get; set; }
+
     public virtual DbSet<RecetaProducto> RecetaProductos { get; set; }
 
     public virtual DbSet<SerieProducto> SerieProductos { get; set; }
@@ -37,6 +43,8 @@ public partial class MonitoreoContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseCollation("Latin1_General_CI_AS");
+
         modelBuilder.Entity<Cliente>(entity =>
         {
             entity.ToTable("Cliente");
@@ -77,6 +85,36 @@ public partial class MonitoreoContext : DbContext
                 .HasForeignKey(d => d.ProduccionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Consumo_Produccion");
+        });
+
+        modelBuilder.Entity<HistorialPrueba>(entity =>
+        {
+            entity.HasKey(e => e.Idhistorial).HasName("PK__Historia__C4BEFB6951F38D51");
+
+            entity.ToTable("HistorialPrueba");
+
+            entity.Property(e => e.Idhistorial).HasColumnName("IDHistorial");
+            entity.Property(e => e.FechaPrueba)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Idprueba).HasColumnName("IDPrueba");
+            entity.Property(e => e.SerieId).HasColumnName("SerieID");
+            entity.Property(e => e.UsuarioId).HasColumnName("UsuarioID");
+            entity.Property(e => e.ValorMedido).HasColumnType("decimal(10, 2)");
+
+            entity.HasOne(d => d.IdpruebaNavigation).WithMany(p => p.HistorialPruebas)
+                .HasForeignKey(d => d.Idprueba)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Historial__IDPru__31B762FC");
+
+            entity.HasOne(d => d.Serie).WithMany(p => p.HistorialPruebas)
+                .HasForeignKey(d => d.SerieId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Historial__Serie__30C33EC3");
+
+            entity.HasOne(d => d.Usuario).WithMany(p => p.HistorialPruebas)
+                .HasForeignKey(d => d.UsuarioId)
+                .HasConstraintName("FK__Historial__Usuar__32AB8735");
         });
 
         modelBuilder.Entity<LoteMateriaPrima>(entity =>
@@ -171,6 +209,50 @@ public partial class MonitoreoContext : DbContext
                 .IsUnicode(false);
         });
 
+        modelBuilder.Entity<Prueba>(entity =>
+        {
+            entity.HasKey(e => e.Idprueba).HasName("PK__Prueba__31EA9050DC42A6FA");
+
+            entity.ToTable("Prueba");
+
+            entity.Property(e => e.Idprueba).HasColumnName("IDPrueba");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(150)
+                .IsUnicode(false);
+            entity.Property(e => e.MetodoPrueba)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.UnidadMedida)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<PruebaProducto>(entity =>
+        {
+            entity.HasKey(e => e.IdpruebaProducto).HasName("PK__PruebaPr__687920EBD8041791");
+
+            entity.ToTable("PruebaProducto");
+
+            entity.Property(e => e.IdpruebaProducto).HasColumnName("IDPruebaProducto");
+            entity.Property(e => e.Comentario)
+                .HasMaxLength(200)
+                .IsUnicode(false);
+            entity.Property(e => e.Idprueba).HasColumnName("IDPrueba");
+            entity.Property(e => e.ProductoId).HasColumnName("ProductoID");
+            entity.Property(e => e.Tolerancia).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.ValorEsperado).HasColumnType("decimal(10, 2)");
+
+            entity.HasOne(d => d.IdpruebaNavigation).WithMany(p => p.PruebaProductos)
+                .HasForeignKey(d => d.Idprueba)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__PruebaPro__IDPru__2CF2ADDF");
+
+            entity.HasOne(d => d.Producto).WithMany(p => p.PruebaProductos)
+                .HasForeignKey(d => d.ProductoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__PruebaPro__Produ__2BFE89A6");
+        });
+
         modelBuilder.Entity<RecetaProducto>(entity =>
         {
             entity.HasKey(e => e.RecetaId).HasName("PK__RecetaPr__03D077B88AEFDE49");
@@ -200,6 +282,10 @@ public partial class MonitoreoContext : DbContext
             entity.ToTable("SerieProducto");
 
             entity.Property(e => e.SerieId).HasColumnName("SerieID");
+            entity.Property(e => e.EstatusCalidad)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasDefaultValue("Pendiente");
             entity.Property(e => e.NumeroSerie)
                 .HasMaxLength(50)
                 .IsUnicode(false);

@@ -14,4 +14,6 @@ public partial class Usuario
     public string Usuario1 { get; set; } = null!;
 
     public string Password { get; set; } = null!;
+
+    public virtual ICollection<HistorialPrueba> HistorialPruebas { get; set; } = new List<HistorialPrueba>();
 }

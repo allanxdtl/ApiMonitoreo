@@ -11,5 +11,9 @@ public partial class SerieProducto
 
     public string NumeroSerie { get; set; } = null!;
 
+    public string? EstatusCalidad { get; set; }
+
+    public virtual ICollection<HistorialPrueba> HistorialPruebas { get; set; } = new List<HistorialPrueba>();
+
     public virtual Produccion Produccion { get; set; } = null!;
 }

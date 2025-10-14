@@ -15,5 +15,7 @@ public partial class ProductoTerminado
 
     public virtual ICollection<Produccion> Produccions { get; set; } = new List<Produccion>();
 
+    public virtual ICollection<PruebaProducto> PruebaProductos { get; set; } = new List<PruebaProducto>();
+
     public virtual ICollection<RecetaProducto> RecetaProductos { get; set; } = new List<RecetaProducto>();
 }

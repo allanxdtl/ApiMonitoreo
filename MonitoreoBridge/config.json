@@ -1,3 +1,4 @@
 {
-  "api" : "http://localhost:5241"
+  "api": "http://localhost:5241",
+  "usb": ""
 }

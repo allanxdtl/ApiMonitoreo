@@ -1,0 +1,127 @@
+﻿body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #74b9ff, #a29bfe);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.crud-container {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 500px;
+    text-align: center;
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+    .crud-container h2 {
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+input, select {
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.botones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    flex: 1 1 calc(50% - 10px);
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    color: white;
+}
+
+.registrar {
+    background: #27ae60;
+}
+
+    .registrar:hover {
+        background: #219150;
+    }
+
+.actualizar {
+    background: #2980b9;
+}
+
+    .actualizar:hover {
+        background: #1f6692;
+    }
+
+.eliminar {
+    background: #c0392b;
+}
+
+    .eliminar:hover {
+        background: #992d22;
+    }
+
+.buscar {
+    background: #f39c12;
+}
+
+    .buscar:hover {
+        background: #d68910;
+    }
+
+/* Estilos para la tabla */
+.tabla-container {
+    margin-top: 20px;
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fafafa;
+}
+
+#tablaPruebas {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    #tablaPruebas th, #tablaPruebas td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    #tablaPruebas th {
+        background-color: #2c3e50;
+        color: white;
+        position: sticky;
+        top: 0;
+    }

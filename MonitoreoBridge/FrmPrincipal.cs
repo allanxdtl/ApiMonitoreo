@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NationalInstruments.Visa;
 
 namespace MonitoreoBridge
 {
     public partial class FrmPrincipal : Form
     {
-        Api api;
+        Config api;
         HttpClient client;
 
         public FrmPrincipal()
@@ -31,7 +28,7 @@ namespace MonitoreoBridge
                 //Leo el archivo json
                 string json = rd.ReadToEnd();
                 //Deserializamos el archivo en el objeto
-                api = JsonSerializer.Deserialize<Api>(json);
+                api = JsonSerializer.Deserialize<Config>(json);
 
                 //Instanciamos un HttpCliente con la ruta de la api obtenida del json
                 client = new HttpClient()
@@ -67,9 +64,8 @@ namespace MonitoreoBridge
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message, "Ocurrio un error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
             }
         }
 
@@ -79,6 +75,40 @@ namespace MonitoreoBridge
             TxtNombre.Text = string.Empty;
             dtFechaProd.Value = DateTime.Now;
             TxtNoSerie.Text = string.Empty;
+            TxtNoSerie.Focus();
+        }
+
+        private async void BtnResistencia_Click(object sender, EventArgs e)
+        {
+            ConnectionHard obj = new ConnectionHard(api.usb);
+
+            decimal? value = await obj.ReadResistencia();
+
+            if (!value.HasValue)
+                return;
+
+            Prueba prueba = new Prueba()
+            {
+                NoSerie = TxtNoSerie.Text,
+                IdPrueba = 1,
+                ValorMedido = value
+            };
+
+            string json = JsonSerializer.Serialize(prueba);
+            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("/api/RegistroPruebas/RealizarPrueba", content);
+
+            // Validar la respuesta
+            if (response.IsSuccessStatusCode)
+            {
+                MessageBox.Show("Prueba registrada correctamente.");
+            }
+            else
+            {
+                string error = await response.Content.ReadAsStringAsync();
+                MessageBox.Show($"Error al registrar la prueba: {response.StatusCode}\n{error}");
+            }
         }
     }
 }

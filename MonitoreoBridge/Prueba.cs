@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace MonitoreoBridge
 {
-    internal class Api
+    public class Prueba
     {
-        public string api { get; set; }
+        public string NoSerie { get; set; }
+        public int IdPrueba { get; set; }
+        public decimal? ValorMedido { get; set; }
     }
 }

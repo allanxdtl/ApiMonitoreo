@@ -37,6 +37,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.dtFechaProd = new System.Windows.Forms.DateTimePicker();
             this.BtnClear = new System.Windows.Forms.Button();
+            this.BtnResistencia = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -118,11 +119,22 @@
             this.BtnClear.UseVisualStyleBackColor = true;
             this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
             // 
+            // BtnResistencia
+            // 
+            this.BtnResistencia.Location = new System.Drawing.Point(52, 95);
+            this.BtnResistencia.Name = "BtnResistencia";
+            this.BtnResistencia.Size = new System.Drawing.Size(144, 38);
+            this.BtnResistencia.TabIndex = 9;
+            this.BtnResistencia.Text = "Realizar prueba de resistencia";
+            this.BtnResistencia.UseVisualStyleBackColor = true;
+            this.BtnResistencia.Click += new System.EventHandler(this.BtnResistencia_Click);
+            // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(525, 154);
+            this.Controls.Add(this.BtnResistencia);
             this.Controls.Add(this.BtnClear);
             this.Controls.Add(this.dtFechaProd);
             this.Controls.Add(this.label4);
@@ -133,6 +145,7 @@
             this.Controls.Add(this.TxtNoSerie);
             this.Controls.Add(this.label1);
             this.Name = "FrmPrincipal";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Realizar pruebas";
             this.Load += new System.EventHandler(this.FrmPrincipal_Load);
             this.ResumeLayout(false);
@@ -151,6 +164,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker dtFechaProd;
         private System.Windows.Forms.Button BtnClear;
+        private System.Windows.Forms.Button BtnResistencia;
     }
 }
 
