@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados de Pruebas</title>
+    <script src="../js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="../styles/pruebas.css">
+    <style>
+        .crud-container {
+            width: 600px;
+            padding: 30px;
+        }
+
+        .input-busqueda {
+            padding: 12px;
+            width: 100%;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tabla-container {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #fafafa;
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+        /* Colores personalizados */
+        .pasa {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .no-pasa {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="crud-container">
+        <h2>Buscar Resultados de Prueba</h2>
+
+        <form id="buscarForm">
+            <label for="codigo">Código o Serie del Producto:</label>
+            <input type="text" id="codigo" name="codigo" class="input-busqueda" placeholder="Escribe y presiona Enter">
+        </form>
+
+        <div class="tabla-container" id="tablaContainer">
+            <table id="tablaResultados">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Valor Medido</th>
+                        <th>Valor Esperado</th>
+                        <th>Tolerancia (%)</th>
+                        <th>Resultado</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module">
+        import apiRoute from "../js/api.js"
+
+        $(document).ready(function () {
+            $('#codigo').on('keypress', function (e) {
+                if (e.which === 13) { // Enter
+                    e.preventDefault();
+                    const valor = $('#codigo').val().trim();
+
+                    if (valor === '') {
+                        Swal.fire('Atención', 'Por favor ingresa un código o serie.', 'warning');
+                        return;
+                    }
+
+                    const url = `${apiRoute}RegistroPruebas/Resultados/${valor}`;
+
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (!Array.isArray(data) || data.length === 0) {
+                                Swal.fire('Sin resultados', 'No se encontraron pruebas para el código ingresado.', 'info');
+                                $('#tablaContainer').hide();
+                                return;
+                            }
+
+                            const tbody = $('#tablaResultados tbody');
+                            tbody.empty();
+
+                            data.forEach(item => {
+                                const valorEsperado = parseFloat(item.valorEsperado);
+                                const valorMedido = parseFloat(item.valorMedido);
+                                const tolerancia = parseFloat(item.tolerancia);
+
+                                // Calcular límites
+                                const limiteInferior = valorEsperado * (1 - tolerancia / 100);
+                                const limiteSuperior = valorEsperado * (1 + tolerancia / 100);
+
+                                // Verificar si pasa
+                                const pasa = valorMedido >= limiteInferior && valorMedido <= limiteSuperior;
+
+                                const claseResultado = pasa ? "pasa" : "no-pasa";
+                                const textoResultado = pasa ? "PASA" : "NO PASA";
+
+                                const fila = `
+                  <tr>
+                    <td>${item.descripcion}</td>
+                    <td>${item.valorMedido}</td>
+                    <td>${item.valorEsperado}</td>
+                    <td>${item.tolerancia}</td>
+                    <td class="${claseResultado}">${textoResultado}</td>
+                  </tr>
+                `;
+                                tbody.append(fila);
+                            });
+
+                            $('#tablaContainer').show();
+                        },
+                        error: function () {
+                            Swal.fire('Error', 'Ocurrió un error al obtener los datos.', 'error');
+                            $('#tablaContainer').hide();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

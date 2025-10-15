@@ -1,9 +1,11 @@
-﻿$(document).ready(function () {
-  const apiBase = "http://localhost:5241/api";
+﻿import apiRoute from "./api.js";
+
+$(document).ready(function () {
+  const apiBase = apiRoute;
 
   // 1️⃣ Cargar las órdenes pendientes
   function cargarOrdenesPendientes() {
-    $.get(`http://localhost:5241/api/Orden/OrdenesPendientes`, function (data) {
+    $.get(`${apiBase}Orden/OrdenesPendientes`, function (data) {
       let tbody = $("#tablaOrdenes tbody");
       tbody.empty();
 
@@ -71,7 +73,7 @@
             // Esperar 5 segundos antes de hacer la petición
             setTimeout(() => {
               $.ajax({
-                url: `${apiBase}/Produccion/CrearProduccion?productoId=${productoId}&cantidad=${cantidad}&orden=${idorden}`,
+                url: `${apiBase}Produccion/CrearProduccion?productoId=${productoId}&cantidad=${cantidad}&orden=${idorden}`,
                 type: "POST",
                 success: function (produccionId) {
                   Swal.fire(
@@ -99,7 +101,7 @@
   // 3️⃣ Descargar PDF de códigos de barra
   function descargarPDFCodigosBarra(produccionId) {
     $.ajax({
-      url: `${apiBase}/Produccion/GenerarCodigosBarraPDF/${produccionId}`,
+      url: `${apiBase}Produccion/GenerarCodigosBarraPDF/${produccionId}`,
       method: "GET",
       xhrFields: { responseType: "blob" },
       success: function (data) {

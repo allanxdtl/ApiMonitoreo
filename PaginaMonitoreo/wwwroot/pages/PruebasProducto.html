@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Pruebas por Producto</title>
@@ -7,13 +8,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../styles/pruebas.css">
 </head>
+
 <body>
     <div class="crud-container">
         <h2>Pruebas por Producto</h2>
 
         <form id="pruebasPorProductoForm">
             <label for="id">ID:</label>
-            <input type="text" id="id" name="id" placeholder="(Solo para buscar o editar)" disabled style="cursor: not-allowed">
+            <input type="text" id="id" name="id" placeholder="(Solo para buscar o editar)" disabled
+                style="cursor: not-allowed">
 
             <label for="productoId">Producto</label>
             <select id="producto" name="producto">
@@ -52,7 +55,6 @@
                         <th>Prueba</th>
                         <th>Valor Esperado</th>
                         <th>Tolerancia</th>
-                        <th>Comentario</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,4 +66,5 @@
 
     <script type="module" src="../js/PruebasProducto.js"></script>
 </body>
+
 </html>

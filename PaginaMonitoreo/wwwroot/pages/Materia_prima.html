@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Materia Prima</title>
@@ -7,13 +8,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../styles/materia_prima.css">
 </head>
+
 <body>
     <div class="crud-container">
         <h2>Materia Prima</h2>
 
         <form id="materiaPrimaForm">
             <label for="id">ID:</label>
-            <input type="text" id="id" name="id" placeholder="(Solo para buscar o editar)" disabled style="cursor: not-allowed">
+            <input type="text" id="id" name="id" placeholder="(Solo para buscar o editar)" disabled
+                style="cursor: not-allowed">
 
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre">
@@ -47,6 +50,7 @@
             </table>
         </div>
     </div>
-    <script src="../js/Materia_prima.js"></script>
+    <script defer type="module" src="../js/Materia_prima.js"></script>
 </body>
+
 </html>
