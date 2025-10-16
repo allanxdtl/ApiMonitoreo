@@ -36,7 +36,13 @@ $(document).ready(function () {
         tbody.append(fila);
       });
     }).fail(function () {
-      console.error("Error al cargar los registros.");
+      Swal.fire({
+        title: "Error",
+        text: "No se pudieron cargar los datos.",
+        icon: "error",
+        draggable: true,
+        position: "top"
+      });
     });
   }
 

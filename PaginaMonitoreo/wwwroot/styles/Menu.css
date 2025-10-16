@@ -14,52 +14,73 @@
     width: 220px;
     background: #2c3e50;
     color: #fff;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
 }
 
-    .sidebar h2 {
-        margin-bottom: 20px;
-        font-size: 20px;
-        text-align: center;
-    }
+/* Contenedor del contenido del menú (para hacerlo scrollable) */
+.sidebar-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: #34495e #2c3e50;
+}
 
-    .sidebar ul {
-        list-style: none;
-    }
+.sidebar-content::-webkit-scrollbar {
+    width: 6px;
+}
 
-        .sidebar ul li {
-            margin-bottom: 15px;
-        }
+.sidebar-content::-webkit-scrollbar-thumb {
+    background-color: #34495e;
+    border-radius: 3px;
+}
 
-            .sidebar ul li a {
-                text-decoration: none;
-                color: #ecf0f1;
-                padding: 8px 12px;
-                display: block;
-                border-radius: 4px;
-                transition: background 0.3s;
-            }
+.sidebar-content h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    text-align: center;
+}
 
-                .sidebar ul li a:hover {
-                    background: #34495e;
-                }
+.sidebar-content ul {
+    list-style: none;
+}
 
+.sidebar-content ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar-content ul li a {
+    text-decoration: none;
+    color: #ecf0f1;
+    padding: 8px 12px;
+    display: block;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.sidebar-content ul li a:hover {
+    background: #34495e;
+}
+
+/* Contenido principal */
 .content {
     flex-grow: 1;
     background: #ecf0f1;
 }
 
-    .content iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-    }
+.content iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
 
-
+/* Botón de cerrar sesión fijo al fondo */
 .logout-btn {
     width: 100%;
-    padding: 10px;
-    margin-top: 20px;
+    padding: 12px;
     background-color: #e74c3c;
     color: white;
     border: none;
@@ -69,9 +90,9 @@
     transition: background-color 0.3s;
 }
 
-    .logout-btn:hover {
-        background-color: #c0392b;
-    }
+.logout-btn:hover {
+    background-color: #c0392b;
+}
 
 #start {
     margin-bottom: 20px;
@@ -82,4 +103,3 @@
     border-bottom: 2px solid #34495e;
     padding-bottom: 10px;
 }
-

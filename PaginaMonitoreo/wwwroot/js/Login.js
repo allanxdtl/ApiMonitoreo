@@ -28,10 +28,10 @@ $(document).ready(function () {
                 window.location.href = "Menu.html";
             },
             error: function (xhr) {
-                if (xhr.status === 404) {
-                    Swal.fire("Login fallido :(", "Usuario o contraseña incorrectos", "error");
+                if (xhr.status === 401) {
+                    Swal.fire("Error", xhr.responseJSON.message, "error");
                 } else {
-                    Swal.fire("Error", "Hubo un problema con el servidor", "error");
+                    Swal.fire("Error", "Ocurrió un error al intentar iniciar sesión", "error");
                 }
             }
         });

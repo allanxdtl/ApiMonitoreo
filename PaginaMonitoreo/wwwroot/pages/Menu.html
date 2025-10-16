@@ -1,68 +1,101 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Plataforma</title>
     <script src="../js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="../styles/Menu.css" rel="stylesheet" />
     <script>
-        $(document).ready(function () {
-            // Verificar si hay usuario logueado
-            const usuario = localStorage.getItem("usuario");
-            if (!usuario) {
-                // Si no hay usuario, redirige al login
-                window.location.href = "Login.html";
-                return;
+      $(document).ready(function () {
+        // Verificar si hay usuario logueado
+        const usuario = localStorage.getItem("usuario");
+        if (!usuario) {
+          // Si no hay usuario, redirige al login
+          window.location.href = "Login.html";
+          return;
+        }
+
+        // Evento para cerrar sesión
+        $("#logoutBtn").click(function () {
+          Swal.fire({
+            title: "¿Cerrar sesión?",
+            text: "Tu sesión se cerrará",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, salir",
+            cancelButtonText: "Cancelar",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              localStorage.removeItem("usuario");
+              window.location.href = "Login.html";
             }
-
-            // Evento para cerrar sesión
-            $("#logoutBtn").click(function () {
-                Swal.fire({
-                    title: "¿Cerrar sesión?",
-                    text: "Tu sesión se cerrará",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "Sí, salir",
-                    cancelButtonText: "Cancelar"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        localStorage.removeItem("usuario");
-                        window.location.href = "Login.html";
-                    }
-                });
-            });
+          });
         });
+      });
     </script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <!-- Menú lateral -->
-        <aside class="sidebar">
-            <h2 id="start" href="./Bienvenida.html" target="contenidoFrame">Plataforma</h2>
-            <ul>
-                <li><a href="Materia_prima.html" target="contenidoFrame">Materia prima</a></li>
-                <li><a href="Registrar_lote.html" target="contenidoFrame">Registrar lote</a></li>
-                <li><a href="Receta_bom.html" target="contenidoFrame">Receta/BOM</a></li>
-                <li><a href="Productos.html" target="contenidoFrame">Productos</a></li>
-                <li><a href="Produccion.html" target="contenidoFrame">Producción</a></li>
-                <li><a href="Pruebas.html" target="contenidoFrame">Pruebas generales</a></li>
-                <li><a href="PruebasProducto.html" target="contenidoFrame">Pruebas por producto</a></li>
-                <li><a href="ResultadosPruebas.html" target="contenidoFrame">Resultados de Pruebas</a></li>
-                <li><a href="Ordenes.html" target="contenidoFrame">Órdenes</a></li>
-                <li><a href="Clientes.html" target="contenidoFrame">Clientes</a></li>
-                <li><a href="Usuarios.html" target="contenidoFrame">Usuarios</a></li>
-            </ul>
-            <!-- Botón de cerrar sesión al final -->
-            <button id="logoutBtn" class="logout-btn">Cerrar sesión</button>
-        </aside>
+      <!-- Menú lateral -->
+      <aside class="sidebar">
+        <div class="sidebar-content">
+          <h2 id="start">Plataforma</h2>
+          <ul>
+            <li>
+              <a href="Materia_prima.html" target="contenidoFrame"
+                >Materia prima</a
+              >
+            </li>
+            <li>
+              <a href="Registrar_lote.html" target="contenidoFrame"
+                >Registrar lote</a
+              >
+            </li>
+            <li>
+              <a href="Receta_bom.html" target="contenidoFrame">Receta/BOM</a>
+            </li>
+            <li>
+              <a href="Productos.html" target="contenidoFrame">Productos</a>
+            </li>
+            <li>
+              <a href="Produccion.html" target="contenidoFrame">Producción</a>
+            </li>
+            <li>
+              <a href="Pruebas.html" target="contenidoFrame"
+                >Pruebas generales</a
+              >
+            </li>
+            <li>
+              <a href="PruebasProducto.html" target="contenidoFrame"
+                >Pruebas por producto</a
+              >
+            </li>
+            <li>
+              <a href="ResultadosPruebas.html" target="contenidoFrame"
+                >Resultados de Pruebas</a
+              >
+            </li>
+            <li><a href="Ordenes.html" target="contenidoFrame">Órdenes</a></li>
+            <li>
+              <a href="Clientes.html" target="contenidoFrame">Clientes</a>
+            </li>
+            <li>
+              <a href="Usuarios.html" target="contenidoFrame">Usuarios</a>
+            </li>
+          </ul>
+        </div>
+        <button id="logoutBtn" class="logout-btn">Cerrar sesión</button>
+      </aside>
 
-        <main class="content">
-            <iframe name="contenidoFrame" id="contenidoFrame" src="../pages/Bienvenida.html"></iframe>
-        </main>
+      <main class="content">
+        <iframe
+          name="contenidoFrame"
+          id="contenidoFrame"
+          src="../pages/Bienvenida.html"
+        ></iframe>
+      </main>
     </div>
-</body>
-
+  </body>
 </html>
