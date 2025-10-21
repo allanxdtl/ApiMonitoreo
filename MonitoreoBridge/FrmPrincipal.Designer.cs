@@ -38,6 +38,7 @@
             this.dtFechaProd = new System.Windows.Forms.DateTimePicker();
             this.BtnClear = new System.Windows.Forms.Button();
             this.BtnResistencia = new System.Windows.Forms.Button();
+            this.BtnContinuidad = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -129,11 +130,22 @@
             this.BtnResistencia.UseVisualStyleBackColor = true;
             this.BtnResistencia.Click += new System.EventHandler(this.BtnResistencia_Click);
             // 
+            // BtnContinuidad
+            // 
+            this.BtnContinuidad.Location = new System.Drawing.Point(202, 95);
+            this.BtnContinuidad.Name = "BtnContinuidad";
+            this.BtnContinuidad.Size = new System.Drawing.Size(144, 38);
+            this.BtnContinuidad.TabIndex = 10;
+            this.BtnContinuidad.Text = "Realizar prueba de continudad";
+            this.BtnContinuidad.UseVisualStyleBackColor = true;
+            this.BtnContinuidad.Click += new System.EventHandler(this.BtnContinuidad_Click);
+            // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(525, 154);
+            this.Controls.Add(this.BtnContinuidad);
             this.Controls.Add(this.BtnResistencia);
             this.Controls.Add(this.BtnClear);
             this.Controls.Add(this.dtFechaProd);
@@ -165,6 +177,7 @@
         private System.Windows.Forms.DateTimePicker dtFechaProd;
         private System.Windows.Forms.Button BtnClear;
         private System.Windows.Forms.Button BtnResistencia;
+        private System.Windows.Forms.Button BtnContinuidad;
     }
 }
 

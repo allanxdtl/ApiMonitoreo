@@ -42,5 +42,39 @@ namespace MonitoreoBridge
             });
             return resistencia;
         }
+
+        public async Task<decimal?> ReadContinuidad()
+        {
+            decimal? continuidad = null;
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    ResourceManager rm = new ResourceManager();
+                    using (MessageBasedSession session = (MessageBasedSession)rm.Open(_devideUSBAddress))
+                    {
+                        session.RawIO.Write("*RST");
+                        session.RawIO.Write("CONF:CONT");
+                        session.RawIO.Write("INIT");
+                        session.RawIO.Write("READ?");
+
+                        string response = session.RawIO.ReadString().Trim();
+                        if (decimal.TryParse(response, out var valor))
+                        {
+                            continuidad = valor;
+                        }
+                    }
+                }
+                catch (VisaException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error al obtener continuidad",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            });
+
+            return continuidad; // Ohms: si es menor a 50 => hay continuidad
+        }
+
     }
 }

@@ -110,5 +110,38 @@ namespace MonitoreoBridge
                 MessageBox.Show($"Error al registrar la prueba: {response.StatusCode}\n{error}");
             }
         }
+
+        private async void BtnContinuidad_Click(object sender, EventArgs e)
+        {
+            ConnectionHard obj = new ConnectionHard(api.usb);
+
+            decimal? value = await obj.ReadContinuidad();
+
+            if (!value.HasValue)
+                return;
+
+            Prueba prueba = new Prueba()
+            {
+                NoSerie = TxtNoSerie.Text,
+                IdPrueba = 2,
+                ValorMedido = value
+            };
+
+            string json = JsonSerializer.Serialize(prueba);
+            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("/api/RegistroPruebas/RealizarPrueba", content);
+
+            // Validar la respuesta
+            if (response.IsSuccessStatusCode)
+            {
+                MessageBox.Show("Prueba registrada correctamente.");
+            }
+            else
+            {
+                string error = await response.Content.ReadAsStringAsync();
+                MessageBox.Show($"Error al registrar la prueba: {response.StatusCode}\n{error}");
+            }
+        }
     }
 }
