@@ -1,12 +1,35 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
+    <script src="../js/jquery-3.7.1.min.js"></script>
     <title></title>
 </head>
+
 <body>
-    <h1>
-        BIENVENIDO A LA PLATAFORMA DE AUDIFONOS
+    <h1 id="title">
     </h1>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            /* Centra horizontalmente */
+            align-items: center;
+            /* Centra verticalmente */
+            height: 100vh;
+            /* Ocupa toda la altura de la ventana */
+            margin: 0;
+        }
+    </style>
+    <script defer>
+        $(document).ready(function () {
+            let nombre = localStorage.getItem("nombre");
+
+            $("#title").text(`Bienvenido a la plataforma, ${nombre}`);
+        })
+    </script>
 </body>
+
 </html>

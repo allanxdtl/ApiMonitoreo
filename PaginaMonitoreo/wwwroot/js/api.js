@@ -1,3 +1,3 @@
-const apiRoute = "http://localhost:5241/api/";
+const apiRoute = "http://172.20.10.3:5241/api/";
 
 export default apiRoute;
