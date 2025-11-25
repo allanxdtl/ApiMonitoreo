@@ -71,7 +71,7 @@ $(document).ready(function () {
     };
 
     $.ajax({
-      url: `${api}PruebasPorProducto/Create`,
+      url: `${api}PruebasPorProducto/Insert`,
       type: "POST",
       contentType: "application/json",
       data: JSON.stringify(data),
@@ -103,7 +103,7 @@ $(document).ready(function () {
     };
 
     $.ajax({
-      url: `${api}PruebasPorProducto/Update/${id}`,
+      url: `${api}PruebasPorProducto/Edit`,
       type: "PUT",
       contentType: "application/json",
       data: JSON.stringify(data),
