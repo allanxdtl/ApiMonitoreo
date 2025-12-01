@@ -1,0 +1,129 @@
+﻿body {
+    background: #f3f3f3;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.envio-container {
+    width: 500px;
+    margin: 40px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.buscar-box {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+    .buscar-box label {
+        margin-bottom: 5px;
+    }
+
+    .buscar-box input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        margin-bottom: 10px;
+    }
+
+.resultado {
+    margin-top: 20px;
+    background: #fafafa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.invisible {
+    display: none;
+}
+
+.campo {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+    .campo label {
+        font-weight: bold;
+    }
+
+    .campo span {
+        color: #444;
+    }
+
+.btn {
+    padding: 10px;
+    border: none;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.orden-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+    .orden-selector button {
+        padding: 8px 12px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 6px;
+        font-size: 14px;
+        border: none;
+    }
+
+        .orden-selector button:hover {
+            background-color: #0056b3;
+        }
+
+.buscar {
+    background: #4f80ff;
+    color: white;
+}
+
+    .buscar:hover {
+        background: #3d6ce0;
+    }
+
+.generar {
+    background: #ffa726;
+    color: white;
+}
+
+    .generar:hover {
+        background: #fb8c00;
+    }
+
+.enviar {
+    background: #43a047;
+    color: white;
+}
+
+    .enviar:hover {
+        background: #2e7d32;
+    }
+
+input[type="number"] {
+    width: 80px;
+    padding: 5px;
+}

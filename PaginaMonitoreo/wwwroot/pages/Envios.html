@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Envíos</title>
+    <link href="../styles/Envios.css" rel="stylesheet" />
+    <script src="../js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+    <div class="envio-container">
+
+        <h2>Envíos</h2>
+
+
+   
+        <div class="orden-selector">
+            <label for="ordenSelect">Selecciona una orden:</label>
+            <select id="ordenSelect">
+                <option value="">-- Seleccionar orden --</option>
+            </select>
+            <button type="button" id="btnBuscarOrden">Buscar</button>
+        </div>
+
+        <div id="resultado" class="resultado invisible">
+
+            <h3>Información de la orden</h3>
+
+            <div class="campo">
+                <label>Orden:</label>
+                <span id="ordenNumero"></span>
+            </div>
+
+            <div class="campo">
+                <label>Cliente:</label>
+                <span id="ordenCliente"></span>
+            </div>
+
+            <div class="campo">
+                <label>Total:</label>
+                <span id="ordenTotal"></span>
+            </div>
+
+            <div class="campo">
+                <label>Estado de pruebas:</label>
+                <span id="ordenPruebas"></span>
+            </div>
+
+            <div class="campo">
+                <label>Producto:</label>
+                <span id="ordenProducto"></span>
+            </div>
+
+            <div class="campo">
+                <label>Cantidad:</label>
+                <span id="ordenCantidad"></span>
+            </div>
+
+            <hr />
+
+            <button id="generarEtiquetas" class="btn generar">Generar etiquetas</button>
+            <button id="confirmarEnvio" class="btn enviar">Confirmar envío</button>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
