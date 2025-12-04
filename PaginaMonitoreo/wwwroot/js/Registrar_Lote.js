@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿import apiRoute from "./api.js";
+
+$(document).ready(function () {
   let modelo = null;
   let camara = document.getElementById("camara");
   let estadoReconocimiento = document.getElementById("estadoReconocimiento");
@@ -9,7 +11,7 @@
   let claseObjetivo = null;
 
   async function cargarModelo() {
-      const URL = "https://teachablemachine.withgoogle.com/models/l9o0q_tEz/";
+    const URL = "https://teachablemachine.withgoogle.com/models/l9o0q_tEz/";
     modelo = await tmImage.load(`${URL}model.json`, `${URL}metadata.json`);
     console.log("Modelo cargado correctamente");
   }
@@ -77,7 +79,7 @@
   $("#fecha").val(`${year}-${month}-${day}`);
 
   // Cargar opciones de materia prima desde la API
-  $.get("http://localhost:5241/api/MateriaPrima/List", function (data) {
+  $.get(`${apiRoute}MateriaPrima/List`, function (data) {
     const selectMateria = $("#materiaPrima");
     selectMateria.empty();
     selectMateria.append('<option value="">-- Seleccionar --</option>');
@@ -101,13 +103,13 @@
     };
 
     $.ajax({
-      url: "http://localhost:5241/api/LoteMateriaPrima/RegistrarLote",
+      url: `${apiRoute}LoteMateriaPrima/RegistrarLote`,
       type: "POST",
       contentType: "application/json",
       data: JSON.stringify(loteData),
       success: function () {
         $.get(
-          `http://localhost:5241/api/LoteMateriaPrima/ObtenerExistencia/${materiaId}`,
+          `${apiRoute}LoteMateriaPrima/ObtenerExistencia/${materiaId}`,
           function (data) {
             Swal.fire({
               icon: "success",

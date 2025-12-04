@@ -177,5 +177,41 @@ namespace MonitoreoBridge
                 MessageBox.Show($"Error al registrar la prueba: {response.StatusCode}\n{error}");
             }
         }
-    }
+
+		private async void BtnRespuesta_Click(object sender, EventArgs e)
+		{
+			AudioPrueba obj = new AudioPrueba();
+
+			// Medimos durante 5 segundos
+			decimal? value = await obj.ReadRespuestaFrecuencia(5);
+
+			if (!value.HasValue)
+			{
+				MessageBox.Show("No se pudo obtener la medición.");
+				return;
+			}
+
+			Prueba prueba = new Prueba()
+			{
+				NoSerie = TxtNoSerie.Text,
+				IdPrueba = 4,  // <<--- Asegúrate que este sea el ID real en tu catálogo
+				ValorMedido = value
+			};
+
+			string json = JsonSerializer.Serialize(prueba);
+			var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+			var response = await client.PostAsync("/api/RegistroPruebas/RealizarPrueba", content);
+
+			if (response.IsSuccessStatusCode)
+			{
+				MessageBox.Show("Prueba registrada correctamente.");
+			}
+			else
+			{
+				string error = await response.Content.ReadAsStringAsync();
+				MessageBox.Show($"Error al registrar la prueba: {response.StatusCode}\n{error}");
+			}
+		}
+	}
 }
