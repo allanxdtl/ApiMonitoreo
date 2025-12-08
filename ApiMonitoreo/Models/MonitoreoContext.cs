@@ -43,8 +43,6 @@ public partial class MonitoreoContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.UseCollation("Latin1_General_CI_AS");
-
         modelBuilder.Entity<Cliente>(entity =>
         {
             entity.ToTable("Cliente");
@@ -163,6 +161,7 @@ public partial class MonitoreoContext : DbContext
             entity.Property(e => e.FechaOrden).HasColumnType("datetime");
             entity.Property(e => e.Idcliente).HasColumnName("IDCliente");
             entity.Property(e => e.Idproducto).HasColumnName("IDProducto");
+            entity.Property(e => e.Precio).HasColumnType("decimal(18, 2)");
 
             entity.HasOne(d => d.IdclienteNavigation).WithMany(p => p.Ordens)
                 .HasForeignKey(d => d.Idcliente)
@@ -207,6 +206,7 @@ public partial class MonitoreoContext : DbContext
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Precio).HasColumnType("decimal(18, 2)");
         });
 
         modelBuilder.Entity<Prueba>(entity =>
@@ -309,7 +309,7 @@ public partial class MonitoreoContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Password)
-                .HasMaxLength(50)
+                .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.Usuario1)
                 .HasMaxLength(50)

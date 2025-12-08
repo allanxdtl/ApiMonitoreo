@@ -40,7 +40,8 @@ namespace ApiMonitoreo.Controllers
                 Idproducto = idProducto,
                 Cantidad = cantidad,
                 FechaOrden = DateTime.Now,
-                Estatus = "Pendiente para producción"
+                Estatus = "Pendiente para producción",
+                Precio = producto.Precio*cantidad
             };
 
             _context.Ordens.Add(nuevaOrden);
@@ -149,7 +150,13 @@ namespace ApiMonitoreo.Controllers
                             text.Span($"{orden.Cantidad:N2} unidades").FontSize(10);
                         });
 
-                        column.Item().PaddingTop(30)
+						column.Item().PaddingTop(5).AlignRight().Text(text =>
+						{
+							text.Span("Total de la orden: ").FontSize(10).Bold();
+							text.Span($"${orden.Precio:N2}").FontSize(10);
+						});
+
+						column.Item().PaddingTop(30)
                             .BorderTop(1)
                             .BorderColor(Colors.Grey.Lighten1)
                             .Text("Firma de autorización: __________________________")

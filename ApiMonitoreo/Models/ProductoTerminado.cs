@@ -11,6 +11,8 @@ public partial class ProductoTerminado
 
     public int ExistenciaActual { get; set; }
 
+    public decimal? Precio { get; set; }
+
     public virtual ICollection<Orden> Ordens { get; set; } = new List<Orden>();
 
     public virtual ICollection<Produccion> Produccions { get; set; } = new List<Produccion>();

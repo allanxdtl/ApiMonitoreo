@@ -40,7 +40,8 @@ namespace ApiMonitoreo.Controllers
                 .Select(p => new
                 {
                     p.ProductoId,
-                    p.Nombre
+                    p.Nombre,
+                    p.Precio
                 })
                 .ToListAsync();
             return Ok(productos);
@@ -59,7 +60,7 @@ namespace ApiMonitoreo.Controllers
             if (producto == null)
                 return NotFound();
 
-            return Ok(new { producto.ProductoId, producto.Nombre });
+            return Ok(new { producto.ProductoId, producto.Nombre, producto.Precio });
         }
 
         [HttpPost("Insert")]

@@ -25,7 +25,7 @@ namespace ApiMonitoreo.Controllers
 		[HttpPost("RealizarPrueba")]
 		public async Task<IActionResult> Post([FromBody] PruebaInyectDTO valores)
 		{
-			var serie = await _context.SerieProductos
+			var serie = await _context.SerieProductos.Include(s => s.Produccion)
 				.FirstOrDefaultAsync(s => s.NumeroSerie == valores.NoSerie);
 
 			var pruebaExistente = await _context.HistorialPruebas
@@ -82,6 +82,39 @@ namespace ApiMonitoreo.Controllers
 				serieActual.EstatusCalidad = todasPasan ? "PASA" : "NO PASA";
 
 				await _context.SaveChangesAsync();
+			}
+
+			var ordenId = serie.Produccion.OrdenId;
+
+			// Obtener todas las series de la producción
+			var seriesDeProduccion = await _context.SerieProductos
+				.Where(sp => sp.Produccion.OrdenId == ordenId)
+				.ToListAsync();
+
+			bool todasSeriesCompletas = true;
+
+			foreach (var s in seriesDeProduccion)
+			{
+				int count = await _context.HistorialPruebas
+					.CountAsync(hp => hp.SerieId == s.SerieId);
+
+				if (count < 4)
+				{
+					todasSeriesCompletas = false;
+					break;
+				}
+			}
+
+			if (todasSeriesCompletas)
+			{
+				var produccion = await _context.Ordens
+					.FirstOrDefaultAsync(p => p.Idorden == ordenId);
+
+				if (produccion != null)
+				{
+					produccion.Estatus = "Listo para Envio";
+					await _context.SaveChangesAsync();
+				}
 			}
 
 

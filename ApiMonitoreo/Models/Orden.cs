@@ -17,6 +17,8 @@ public partial class Orden
 
     public string Estatus { get; set; } = null!;
 
+    public decimal? Precio { get; set; }
+
     public virtual Cliente IdclienteNavigation { get; set; } = null!;
 
     public virtual ProductoTerminado IdproductoNavigation { get; set; } = null!;
