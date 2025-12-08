@@ -1,34 +1,40 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Producto Terminado</title>
     <script src="../js/jquery-3.7.1.min.js"></script>
-    <script src="../js/Productos.js"></script>
+    <script type="module" src="../js/Productos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="../styles/Productos.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../styles/Productos.css" />
+  </head>
+  <body>
     <div class="crud-container">
-        <h2>Producto terminado</h2>
+      <h2>Producto terminado</h2>
 
-        <form id="materiaPrimaForm">
-            <label for="id">ID:</label>
-            <input type="text" id="id" name="id">
+      <form id="materiaPrimaForm">
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id" />
 
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" />
 
-            <label for="modelo">Modelo:</label>
-            <input type="text" id="modelo" name="modelo">
-        </form>
+        <label for="modelo">Precio:</label>
+        <input type="number" id="precio" name="precio" />
+      </form>
 
-        <div class="botones">
-            <button type="button" id="registrar" class="btn registrar">Registrar</button>
-            <button type="button" id="actualizar" class="btn actualizar">Actualizar</button>
-            <button type="button" id="eliminar" class="btn eliminar">Eliminar</button>
-            <button type="button" id="buscar" class="btn buscar">Buscar</button>
-        </div>
+      <div class="botones">
+        <button type="button" id="registrar" class="btn registrar">
+          Registrar
+        </button>
+        <button type="button" id="actualizar" class="btn actualizar">
+          Actualizar
+        </button>
+        <button type="button" id="eliminar" class="btn eliminar">
+          Eliminar
+        </button>
+        <button type="button" id="buscar" class="btn buscar">Buscar</button>
+      </div>
     </div>
-</body>
+  </body>
 </html>

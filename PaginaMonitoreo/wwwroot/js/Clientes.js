@@ -1,6 +1,6 @@
 ﻿/// <reference path="jquery-3.7.1.min.js" />
 
-import apiRoute from "./api";
+import apiRoute from "./api.js";
 
 $(document).ready(function () {
 

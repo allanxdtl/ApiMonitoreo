@@ -1,135 +1,151 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Resultados de Pruebas</title>
     <script src="../js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="../styles/pruebas.css">
+    <link rel="stylesheet" href="../styles/pruebas.css" />
     <style>
-        .crud-container {
-            width: 600px;
-            padding: 30px;
-        }
+      .crud-container {
+        width: 600px;
+        padding: 30px;
+      }
 
-        .input-busqueda {
-            padding: 12px;
-            width: 100%;
-            border: 1px solid #bdc3c7;
-            border-radius: 6px;
-            font-size: 16px;
-            margin-top: 10px;
-            margin-bottom: 15px;
-        }
+      .input-busqueda {
+        padding: 12px;
+        width: 95%;
+        border: 1px solid #bdc3c7;
+        border-radius: 6px;
+        font-size: 16px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+      }
 
-        .tabla-container {
-            margin-top: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            background: #fafafa;
-            display: none;
-        }
+      .tabla-container {
+        margin-top: 20px;
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background: #fafafa;
+        display: none;
+      }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
 
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-            font-size: 14px;
-        }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+        font-size: 14px;
+      }
 
-        th {
-            background-color: #2c3e50;
-            color: white;
-            position: sticky;
-            top: 0;
-        }
+      th {
+        background-color: #2c3e50;
+        color: white;
+        position: sticky;
+        top: 0;
+      }
 
-        /* Colores personalizados */
-        .pasa {
-            color: #27ae60;
-            font-weight: bold;
-        }
+      /* Colores personalizados */
+      .pasa {
+        color: #27ae60;
+        font-weight: bold;
+      }
 
-        .no-pasa {
-            color: #e74c3c;
-            font-weight: bold;
-        }
+      .no-pasa {
+        color: #e74c3c;
+        font-weight: bold;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="crud-container">
-        <h2>Buscar Resultados de Prueba</h2>
+      <h2>Buscar Resultados de Prueba</h2>
 
-        <form id="buscarForm">
-            <label for="codigo">Código, Serie del Producto o Numero de Orden:</label>
-            <input type="text" id="codigo" name="codigo" class="input-busqueda" placeholder="Escribe y presiona Enter">
-        </form>
+      <form id="buscarForm">
+        <label for="codigo"
+          >Código, Serie del Producto o Numero de Orden:</label
+        >
+        <input
+          type="text"
+          id="codigo"
+          name="codigo"
+          class="input-busqueda"
+          placeholder="Escribe y presiona Enter"
+        />
+      </form>
 
-        <div class="tabla-container" id="tablaContainer">
-            <table id="tablaResultados">
-                <thead>
-                    <tr>
-                        <th>Descripción</th>
-                        <th>Valor Medido</th>
-                        <th>Valor Esperado</th>
-                        <th>Tolerancia (%)</th>
-                        <th>Resultado</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+      <div class="tabla-container" id="tablaContainer">
+        <table id="tablaResultados">
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th>Valor Medido</th>
+              <th>Valor Esperado</th>
+              <th>Tolerancia (%)</th>
+              <th>Resultado</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
 
     <script type="module">
-        import apiRoute from "../js/api.js"
+      import apiRoute from "../js/api.js";
 
-        $(document).ready(function () {
-            $('#codigo').on('keypress', function (e) {
-                if (e.which === 13) { // Enter
-                    e.preventDefault();
-                    const valor = $('#codigo').val().trim();
+      $(document).ready(function () {
+        $("#codigo").on("keypress", function (e) {
+          if (e.which === 13) {
+            // Enter
+            e.preventDefault();
+            const valor = $("#codigo").val().trim();
 
-                    if (valor === '') {
-                        Swal.fire('Atención', 'Por favor ingresa un código o serie.', 'warning');
-                        return;
-                    }
+            if (valor === "") {
+              Swal.fire(
+                "Atención",
+                "Por favor ingresa un código o serie.",
+                "warning"
+              );
+              return;
+            }
 
-                    const url = `${apiRoute}RegistroPruebas/Resultados/${valor}`;
+            const url = `${apiRoute}RegistroPruebas/Resultados/${valor}`;
 
-                    $.ajax({
-                        url: url,
-                        method: 'GET',
-                        dataType: 'json',
-                        success: function (data) {
-                            if (!Array.isArray(data) || data.length === 0) {
-                                Swal.fire('Sin resultados', 'No se encontraron pruebas para el código ingresado.', 'info');
-                                $('#tablaContainer').hide();
-                                return;
-                            }
+            $.ajax({
+              url: url,
+              method: "GET",
+              dataType: "json",
+              success: function (data) {
+                if (!Array.isArray(data) || data.length === 0) {
+                  Swal.fire(
+                    "Sin resultados",
+                    "No se encontraron pruebas para el código ingresado.",
+                    "info"
+                  );
+                  $("#tablaContainer").hide();
+                  return;
+                }
 
-                            const tbody = $('#tablaResultados tbody');
-                            const thead = $('#tablaResultados thead');
-                            tbody.empty();
+                const tbody = $("#tablaResultados tbody");
+                const thead = $("#tablaResultados thead");
+                tbody.empty();
 
-                            // Detectar si es búsqueda por ORDEN (tiene prueba1-prueba4)
-                            const esBusquedaPorOrden = data[0].prueba1 !== undefined;
+                // Detectar si es búsqueda por ORDEN (tiene prueba1-prueba4)
+                const esBusquedaPorOrden = data[0].prueba1 !== undefined;
 
-                            if (esBusquedaPorOrden) {
-                                // -----------------------
-                                // 🟦 ENCABEZADO PARA ORDEN
-                                // -----------------------
-                                thead.html(`
+                if (esBusquedaPorOrden) {
+                  // -----------------------
+                  // 🟦 ENCABEZADO PARA ORDEN
+                  // -----------------------
+                  thead.html(`
             <tr>
                 <th>Número de Serie</th>
                 <th>Prueba 1</th>
@@ -140,27 +156,27 @@
             </tr>
         `);
 
-                                data.forEach(item => {
-                                    const clase = item.resultado === "PASA" ? "pasa" : "no-pasa";
+                  data.forEach((item) => {
+                    const clase =
+                      item.resultado === "PASA" ? "pasa" : "no-pasa";
 
-                                    const fila = `
+                    const fila = `
                 <tr>
                     <td>${item.numeroSerie}</td>
-                    <td>${item.prueba1 ?? '-'}</td>
-                    <td>${item.prueba2 ?? '-'}</td>
-                    <td>${item.prueba3 ?? '-'}</td>
-                    <td>${item.prueba4 ?? '-'}</td>
+                    <td>${item.prueba1 ?? "-"}</td>
+                    <td>${item.prueba2 ?? "-"}</td>
+                    <td>${item.prueba3 ?? "-"}</td>
+                    <td>${item.prueba4 ?? "-"}</td>
                     <td class="${clase}">${item.resultado}</td>
                 </tr>
             `;
-                                    tbody.append(fila);
-                                });
-
-                            } else {
-                                // -----------------------------
-                                // 🟩 ENCABEZADO PARA NUM SERIE
-                                // -----------------------------
-                                thead.html(`
+                    tbody.append(fila);
+                  });
+                } else {
+                  // -----------------------------
+                  // 🟩 ENCABEZADO PARA NUM SERIE
+                  // -----------------------------
+                  thead.html(`
             <tr>
                 <th>Descripción</th>
                 <th>Valor Medido</th>
@@ -170,10 +186,11 @@
             </tr>
         `);
 
-                                data.forEach(item => {
-                                    const clase = item.resultado === "PASA" ? "pasa" : "no-pasa";
+                  data.forEach((item) => {
+                    const clase =
+                      item.resultado === "PASA" ? "pasa" : "no-pasa";
 
-                                    const fila = `
+                    const fila = `
                 <tr>
                     <td>${item.descripcion}</td>
                     <td>${item.valorMedido}</td>
@@ -182,21 +199,24 @@
                     <td class="${clase}">${item.resultado}</td>
                 </tr>
             `;
-                                    tbody.append(fila);
-                                });
-                            }
-
-                            $('#tablaContainer').show();
-                        },
-                        error: function () {
-                            Swal.fire('Error', 'Ocurrió un error al obtener los datos.', 'error');
-                            $('#tablaContainer').hide();
-                        }
-                    });
+                    tbody.append(fila);
+                  });
                 }
-            });
-        });
-    </script>
-</body>
 
+                $("#tablaContainer").show();
+              },
+              error: function () {
+                Swal.fire(
+                  "Error",
+                  "Ocurrió un error al obtener los datos.",
+                  "error"
+                );
+                $("#tablaContainer").hide();
+              },
+            });
+          }
+        });
+      });
+    </script>
+  </body>
 </html>

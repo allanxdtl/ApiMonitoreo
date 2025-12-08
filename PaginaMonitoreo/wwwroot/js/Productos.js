@@ -1,10 +1,11 @@
 ﻿/// <reference path="jquery-3.7.1.min.js" />
+import apiRoute from './api.js';
 $(document).ready(function () {
 
     // Registrar
     $('#registrar').on('click', function () {
         let datos = {
-            nombre: $('#nombre').val() + ' ' + $('#modelo').val() 
+            nombre: $('#nombre').val() + ' ' + $('#modelo').val()
         };
 
         if (!datos.nombre) {
@@ -17,7 +18,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: "http://localhost:5241/api/ProductoTerminado/Insert",
+            url: `${apiRoute}ProductoTerminado/Insert`,
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(datos),
@@ -53,9 +54,10 @@ $(document).ready(function () {
             return;
         }
 
-        $.get(`http://localhost:5241/api/ProductoTerminado/${id}`, function (data) {
+        $.get(`${apiRoute}ProductoTerminado/${id}`, function (data) {
             if (data) {
                 $('#nombre').val(data.nombre);
+                $('#precio').val(data.precio);
 
                 Swal.fire({
                     icon: 'success',
@@ -83,7 +85,7 @@ $(document).ready(function () {
         let id = $('#id').val();
         let datos = {
             productoId: parseInt(id),
-            nombre: $('#nombre').val() + ' ' + $('#modelo').val() 
+            nombre: $('#nombre').val() + ' ' + $('#modelo').val()
         };
 
         if (!id || !datos.nombre) {
@@ -96,7 +98,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: `http://localhost:5241/api/ProductoTerminado/Edit`,
+            url: `${apiRoute}ProductoTerminado/Edit`,
             method: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify(datos),
@@ -141,7 +143,7 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: `http://localhost:5241/api/ProductoTerminado/Delete/${id}`,
+                    url: `${apiRoute}ProductoTerminado/Delete/${id}`,
                     method: 'DELETE',
                     success: function () {
                         Swal.fire({

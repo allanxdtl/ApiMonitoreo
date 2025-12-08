@@ -9,12 +9,22 @@ $(document).ready(function () {
       select.empty();
       select.append('<option value="">-- Seleccionar --</option>');
       data.forEach((p) => {
-        select.append(`<option value="${p.productoId}">${p.nombre}</option>`);
+        select.append(`<option value="${p.productoId}" data-precio="${p.precio}">${p.nombre}</option>`);
       });
     }).fail(function () {
       Swal.fire("Error", "No se pudieron cargar los productos", "error");
     });
   }
+
+  $("#producto, #cantidad").on("change keyup", () => {
+    const selectedOption = $("#producto option:selected");
+    const precio = selectedOption.data("precio") || 0;
+    const cantidad = parseFloat($("#cantidad").val()) || 0;
+
+    const total = precio * cantidad;
+
+    $("#total").text(`Total $: ${total.toFixed(2)}`);
+  });
 
   // Llamar a la función para cargar productos al inicio
   cargarProductos();
@@ -104,7 +114,7 @@ $(document).ready(function () {
       url: `${apiBase}Orden/CrearOrden?idCliente=${idCliente}&idProducto=${idProducto}&cantidad=${cantidad}`,
       type: "POST",
       xhrFields: {
-        responseType: "blob", // <-- clave
+        responseType: "blob",
       },
       success: function (data) {
         // Descargar el archivo PDF retornado por la API
