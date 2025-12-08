@@ -48,6 +48,41 @@ namespace ApiMonitoreo.Controllers
 
 			var NumeroDePruebas = _context.HistorialPruebas.Where(hp => hp.SerieId == reg.SerieId).Count();
 
+			if (NumeroDePruebas == 4)
+			{
+				// Obtener las 4 pruebas realizadas
+				var pruebasRealizadas = await _context.HistorialPruebas
+					.Where(hp => hp.SerieId == reg.SerieId)
+					.ToListAsync();
+
+				// Obtener los valores esperados y tolerancias de esas pruebas
+				var catalogoPruebas = await _context.PruebaProductos
+					.Where(pp => pruebasRealizadas.Select(pr => pr.Idprueba).Contains(pp.Idprueba))
+					.ToListAsync();
+
+				bool todasPasan = true;
+
+				foreach (var realizada in pruebasRealizadas)
+				{
+					var catalogo = catalogoPruebas.First(pp => pp.Idprueba == realizada.Idprueba);
+
+					var diferencia = Math.Abs(realizada.ValorMedido - catalogo.ValorEsperado);
+
+					if (diferencia > catalogo.Tolerancia)
+					{
+						todasPasan = false;
+						break;
+					}
+				}
+
+				// Actualizar estatus dependiendo del resultado
+				SerieProducto? serieActual =
+					await _context.SerieProductos.FirstOrDefaultAsync(sp => sp.SerieId == reg.SerieId);
+
+				serieActual.EstatusCalidad = todasPasan ? "PASA" : "NO PASA";
+
+				await _context.SaveChangesAsync();
+			}
 
 
 			return Ok(new { message = "Prueba registrada correctamente" });
@@ -85,23 +120,28 @@ namespace ApiMonitoreo.Controllers
 											.FirstOrDefault(),
 
 										Resultado =
-											sp.HistorialPruebas.Count() == 4 ? "OK" : "INCOMPLETO"
+											sp.EstatusCalidad
 									})
 						.ToListAsync();
 				return Ok(query);
 			}
 
 			var result = await _context.HistorialPruebas
-												.Join(_context.SerieProductos, hp => hp.SerieId, sp => sp.SerieId, (hp, sp) => new { hp, sp })
-												.Where(s => s.sp.NumeroSerie == noSerie)
-												.Join(_context.Pruebas, x => x.hp.Idprueba, p => p.Idprueba, (x, p) => new { x.hp, x.sp, p })
-												.Join(_context.PruebaProductos, x => x.p.Idprueba, pp => pp.Idprueba, (x, pp) => new
-												{
-													Descripcion = x.p.Descripcion,
-													ValorMedido = x.hp.ValorMedido,
-													ValorEsperado = pp.ValorEsperado,
-													Tolerancia = pp.Tolerancia
-												}).ToListAsync();
+				.Join(_context.SerieProductos, hp => hp.SerieId, sp => sp.SerieId, (hp, sp) => new { hp, sp })
+				.Where(s => s.sp.NumeroSerie == noSerie)
+				.Join(_context.Pruebas, x => x.hp.Idprueba, p => p.Idprueba, (x, p) => new { x.hp, x.sp, p })
+				.Join(_context.PruebaProductos, x => x.p.Idprueba, pp => pp.Idprueba, (x, pp) => new
+				{
+					Descripcion = x.p.Descripcion,
+					ValorMedido = x.hp.ValorMedido,
+					ValorEsperado = pp.ValorEsperado,
+					Tolerancia = pp.Tolerancia,
+					Resultado =
+						Math.Abs(x.hp.ValorMedido - pp.ValorEsperado) <= pp.Tolerancia
+							? "PASA"
+							: "NO PASA"
+				})
+				.ToListAsync();
 
 			return Ok(result);
 		}

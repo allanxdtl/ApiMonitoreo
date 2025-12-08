@@ -71,7 +71,7 @@
         <h2>Buscar Resultados de Prueba</h2>
 
         <form id="buscarForm">
-            <label for="codigo">Código o Serie del Producto:</label>
+            <label for="codigo">Código, Serie del Producto o Numero de Orden:</label>
             <input type="text" id="codigo" name="codigo" class="input-busqueda" placeholder="Escribe y presiona Enter">
         </form>
 
@@ -119,34 +119,72 @@
                             }
 
                             const tbody = $('#tablaResultados tbody');
+                            const thead = $('#tablaResultados thead');
                             tbody.empty();
 
-                            data.forEach(item => {
-                                const valorEsperado = parseFloat(item.valorEsperado);
-                                const valorMedido = parseFloat(item.valorMedido);
-                                const tolerancia = parseFloat(item.tolerancia);
+                            // Detectar si es búsqueda por ORDEN (tiene prueba1-prueba4)
+                            const esBusquedaPorOrden = data[0].prueba1 !== undefined;
 
-                                // Calcular límites
-                                const limiteInferior = valorEsperado * (1 - tolerancia / 100);
-                                const limiteSuperior = valorEsperado * (1 + tolerancia / 100);
+                            if (esBusquedaPorOrden) {
+                                // -----------------------
+                                // 🟦 ENCABEZADO PARA ORDEN
+                                // -----------------------
+                                thead.html(`
+            <tr>
+                <th>Número de Serie</th>
+                <th>Prueba 1</th>
+                <th>Prueba 2</th>
+                <th>Prueba 3</th>
+                <th>Prueba 4</th>
+                <th>Resultado</th>
+            </tr>
+        `);
 
-                                // Verificar si pasa
-                                const pasa = valorMedido >= limiteInferior && valorMedido <= limiteSuperior;
+                                data.forEach(item => {
+                                    const clase = item.resultado === "PASA" ? "pasa" : "no-pasa";
 
-                                const claseResultado = pasa ? "pasa" : "no-pasa";
-                                const textoResultado = pasa ? "PASA" : "NO PASA";
+                                    const fila = `
+                <tr>
+                    <td>${item.numeroSerie}</td>
+                    <td>${item.prueba1 ?? '-'}</td>
+                    <td>${item.prueba2 ?? '-'}</td>
+                    <td>${item.prueba3 ?? '-'}</td>
+                    <td>${item.prueba4 ?? '-'}</td>
+                    <td class="${clase}">${item.resultado}</td>
+                </tr>
+            `;
+                                    tbody.append(fila);
+                                });
 
-                                const fila = `
-                  <tr>
+                            } else {
+                                // -----------------------------
+                                // 🟩 ENCABEZADO PARA NUM SERIE
+                                // -----------------------------
+                                thead.html(`
+            <tr>
+                <th>Descripción</th>
+                <th>Valor Medido</th>
+                <th>Valor Esperado</th>
+                <th>Tolerancia</th>
+                <th>Resultado</th>
+            </tr>
+        `);
+
+                                data.forEach(item => {
+                                    const clase = item.resultado === "PASA" ? "pasa" : "no-pasa";
+
+                                    const fila = `
+                <tr>
                     <td>${item.descripcion}</td>
                     <td>${item.valorMedido}</td>
                     <td>${item.valorEsperado}</td>
                     <td>${item.tolerancia}</td>
-                    <td class="${claseResultado}">${textoResultado}</td>
-                  </tr>
-                `;
-                                tbody.append(fila);
-                            });
+                    <td class="${clase}">${item.resultado}</td>
+                </tr>
+            `;
+                                    tbody.append(fila);
+                                });
+                            }
 
                             $('#tablaContainer').show();
                         },
