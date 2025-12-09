@@ -1,11 +1,15 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Reportes de envíos</title>
     <link href="../styles/ReportesEnvio.css" rel="stylesheet" />
+
     <script src="../js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script type="module" src="../js/Reportes.js"></script>
 </head>
 
 <body>
@@ -15,7 +19,6 @@
         <h2>Reportes de envíos</h2>
 
         <form id="formRepo">
-
             <label for="reporte">Tipo de reporte:</label>
             <select id="reporte">
                 <option value="">-- Reporte --</option>
@@ -26,29 +29,21 @@
 
             <label>Entre los días</label>
             <input type="date" id="fecha1">
+
             <label>Y</label>
             <input type="date" id="fecha2">
 
             <button type="button" id="btnReporte">Ver Reporte</button>
-
         </form>
 
-        <div class="tabla-container">
-            <table id="tablaReporte">
-                <thead>
-                    <tr>
-                        <th>Venta</th>
-                        <th>Scrap</th>
-                        <th>Utilidad Neta</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+        <!-- Aquí irá el PDF -->
+        <div id="previewContainer" style="margin-top: 20px; display:none;">
+            <h3>Vista previa del reporte</h3>
+            <iframe id="pdfFrame" width="100%" height="600px"></iframe>
         </div>
-
 
     </div>
 
 </body>
+
 </html>
